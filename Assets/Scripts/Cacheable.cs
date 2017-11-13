@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Cacheable : MonoBehaviour {
 
-	public bool living;
+	private bool living;
 	public bool _living
 	{
 		get 
@@ -16,6 +16,11 @@ public abstract class Cacheable : MonoBehaviour {
 		{
 			living = value;
 		}
+	}
+
+	void Start()
+	{
+		Destroy ();// default state
 	}
 
 	public void Destroy()

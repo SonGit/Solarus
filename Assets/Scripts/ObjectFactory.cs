@@ -17,7 +17,9 @@ public class ObjectFactory: MonoBehaviour {
 		None,
 		CGBullet,
 		HitSparks,
-		MM_Tracker 
+		MM_Tracker,
+		Rocket,
+		Explosion
 	}
 
 
@@ -26,7 +28,9 @@ public class ObjectFactory: MonoBehaviour {
 		{ PrefabType.None, "" },
 		{ PrefabType.CGBullet, "Prefabs/Chaingun_bullet" },
 		{ PrefabType.HitSparks, "Prefabs/VfxHitSparks" },
-		{ PrefabType.MM_Tracker, "Prefabs/MM_Tracker" }
+		{ PrefabType.MM_Tracker, "Prefabs/MM_Tracker" },
+		{ PrefabType.Rocket, "Prefabs/bullet_rocket" },
+		{ PrefabType.Explosion, "Prefabs/Explosion" }
 	};
 
 	public GameObject MakeObject(PrefabType type)
@@ -35,6 +39,7 @@ public class ObjectFactory: MonoBehaviour {
 		if (PrefabPaths.TryGetValue (type, out path)) {
 			return (Instantiate (Resources.Load (path, typeof(GameObject))) as GameObject);
 		}
+		print ("NULL");
 		return null;
 	}
 

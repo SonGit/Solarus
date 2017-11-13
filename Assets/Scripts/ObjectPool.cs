@@ -8,85 +8,37 @@ public class ObjectPool : MonoBehaviour {
 
 	public static ObjectPool instance;
 
-	private List<HitSparks> _hitSparkParticles;
+	GenericClass<HitSparks> _hitSparks;
 
-	private List<MMTracker> _mmTrackers;
+	GenericClass<MMTracker> _mmTrackers;
+
+	GenericClass<ExplosionObject> _explosionObjs;
 
 	void Awake()
 	{
 		instance = this;
-		_hitSparkParticles = new List<HitSparks> ();
-		_mmTrackers = new List<MMTracker> ();
 	}
 
 	// Use this for initialization
 	void Start () {
-		FillSparksParticles ();
-		FillMMTrackers ();
+		_hitSparks = new GenericClass<HitSparks>(ObjectFactory.PrefabType.HitSparks);
+		_mmTrackers = new GenericClass<MMTracker>(ObjectFactory.PrefabType.MM_Tracker);
+		_explosionObjs = new GenericClass<ExplosionObject>(ObjectFactory.PrefabType.Explosion);
 	}
-
-	private void FillSparksParticles()
-	{
-		for (int i = 0; i < 25; i++) {
-			MakeHitSpark ();
-		}
-	}
-
-	private HitSparks MakeHitSpark()
-	{
-		GameObject go = ObjectFactory.instance.MakeObject(ObjectFactory.PrefabType.HitSparks);
-		HitSparks hs = go.GetComponent<HitSparks> ();
-
-		if (hs != null) {
-			_hitSparkParticles.Add (hs);
-			hs.Destroy ();// default state is destroyed
-			return hs;
-		}
-		return null;
-	}
+		
 
 	public HitSparks GetHitSpark()
 	{
-		//Check in cache to see if there is any free spark
-		foreach (HitSparks spark in _hitSparkParticles) 
-		{
-			if (!spark._living)
-				return spark;
-		}
-
-		return MakeHitSpark ();
+		return _hitSparks.GetObj ();
 	}
 
-	private void FillMMTrackers()
+	public MMTracker GetMMTracker()
 	{
-		for (int i = 0; i < 5; i++) {
-			MakeMMTrackers ();
-		}
+		return _mmTrackers.GetObj ();
 	}
 
-	private MMTracker MakeMMTrackers()
+	public ExplosionObject GetExplosionObject()
 	{
-		GameObject go = ObjectFactory.instance.MakeObject(ObjectFactory.PrefabType.MM_Tracker);
-		MMTracker hs = go.GetComponent<MMTracker> ();
-
-		if (hs != null) {
-			_mmTrackers.Add (hs);
-			hs.Destroy ();// default state is destroyed
-			return hs;
-		}
-		return null;
+		return _explosionObjs.GetObj ();
 	}
-
-	public MMTracker GetTracker()
-	{
-		//Check in cache to see if there is any free spark
-		foreach (MMTracker tracker in _mmTrackers) 
-		{
-			if (!tracker._living)
-				return tracker;
-		}
-
-		return MakeMMTrackers ();
-	}
-
 }

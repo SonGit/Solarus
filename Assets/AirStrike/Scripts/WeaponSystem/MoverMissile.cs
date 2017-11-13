@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class MoverMissile : WeaponBase
+public class MoverMissile : Cacheable
 {
 	public float Damping = 3;
 	public float Speed = 80;
@@ -16,11 +16,17 @@ public class MoverMissile : WeaponBase
 	private bool locked;
 	private int timetorock;
 	private float timeCount = 0;
+	GameObject Target;
 
-	private void Start ()
+	void Start ()
 	{
-		timeCount = Time.time;
+		timeCount = 0;
 		Destroy (gameObject, LifeTime);
+	}
+
+	public void SetTarget(GameObject Target)
+	{
+		this.Target = Target;
 	}
 	
 	private void FixedUpdate ()
@@ -35,60 +41,41 @@ public class MoverMissile : WeaponBase
 
 	private void Update ()
 	{
-		if (Time.time >= (timeCount + LifeTime) - 0.5f) {
-			if (GetComponent<Damage> ()) {
-				GetComponent<Damage> ().Active ();
-			}
-		}
+		timeCount += Time.deltaTime;
 		
 		if (Target) {
 			Quaternion rotation = Quaternion.LookRotation (Target.transform.position - transform.transform.position);
 			transform.rotation = Quaternion.Slerp (transform.rotation, rotation, Time.deltaTime * Damping);
 			Vector3 dir = (Target.transform.position - transform.position).normalized;
 			float direction = Vector3.Dot (dir, transform.forward);
-			if (direction < TargetLockDirection) {
-				Target = null;
-			}
+			//if (direction > TargetLockDirection) {
+				//Target = null;
+			//}
 		}
+
+	}
+
+	private void OnTriggerEnter(Collider collision)
+	{
+		if (timeCount < 1f)
+			return;
 		
-		if (Seeker) {
-			if (timetorock > DurationLock) {
-				if (!locked && !Target) {
-					float distance = int.MaxValue;
-					for (int t=0; t<TargetTag.Length; t++) {
-						if (GameObject.FindGameObjectsWithTag (TargetTag [t]).Length > 0) {
-							GameObject[] objs = GameObject.FindGameObjectsWithTag (TargetTag [t]);
+		ExplosionObject explosion = ObjectPool.instance.GetExplosionObject ();
 
-							for (int i = 0; i < objs.Length; i++) {
-								if (objs [i]) {
-									Vector3 dir = (objs [i].transform.position - transform.position).normalized;
-									float direction = Vector3.Dot (dir, transform.forward);
-									float dis = Vector3.Distance (objs [i].transform.position, transform.position);
-									if (direction >= TargetLockDirection) {
-										if (DistanceLock > dis) {
-											if (distance > dis) {
-												distance = dis;
-												Target = objs [i];
-											}
-											locked = true;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			} else {
-				timetorock += 1;
-			}
+		explosion.transform.position = transform.position;
+		explosion.Live ();
 
-			if (Target) {
-				
-			} else {
-				locked = false;
+		Destroy (gameObject);
+	}
 
-			}
-		}
+	public override void OnDestroy ()
+	{
+		gameObject.SetActive (false);
+	}
+
+	public override void OnLive ()
+	{
+		gameObject.SetActive (true);
 	}
 
 }

@@ -35,6 +35,7 @@ public class HitSparks : Cacheable {
 	{
 		gameObject.SetActive (true);
 		_timeCount = 0;
+		_particle.gameObject.SetActive (true);
 		_particle.Play ();
 	}
 

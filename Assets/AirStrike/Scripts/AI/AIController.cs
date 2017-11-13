@@ -249,7 +249,7 @@ public class AIController : MonoBehaviour
 				attacking = true;
 				if (Random.Range (0, 100) <= AttackRate) {// Make it delay and unstable shooting by Attack rate (if you set Attack Rate to 100 this AI will alway shooting like a brutal)
 					foreach (Chaingun gun in chains)
-						gun.Fire (targetPos);
+						gun.Fire (gun.transform.position + gun.transform.forward);
 					//print(gameObject.name + "  Shooting  ");
 					//flight.WeaponControl.LaunchWeapon (WeaponSelected);// FIRE A GUN!!!
 				}

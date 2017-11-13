@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solarus", "Assembly-CSharp.csproj", "{A3A7CF22-4B9E-55A1-A283-591031C25812}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solarus", "Assembly-CSharp-firstpass.csproj", "{6C458854-B819-FAF9-8631-B3490CB79CA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solarus", "Assembly-CSharp-Editor-firstpass.csproj", "{EC8771D7-0EF2-C6E4-FB0B-1E4EB2647016}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solarus", "Assembly-CSharp-Editor.csproj", "{DD6D643B-2376-F407-83C3-6F4F342D7485}"
 EndProject
 Global
@@ -15,6 +19,14 @@ Global
 		{A3A7CF22-4B9E-55A1-A283-591031C25812}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3A7CF22-4B9E-55A1-A283-591031C25812}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3A7CF22-4B9E-55A1-A283-591031C25812}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C458854-B819-FAF9-8631-B3490CB79CA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C458854-B819-FAF9-8631-B3490CB79CA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C458854-B819-FAF9-8631-B3490CB79CA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C458854-B819-FAF9-8631-B3490CB79CA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC8771D7-0EF2-C6E4-FB0B-1E4EB2647016}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC8771D7-0EF2-C6E4-FB0B-1E4EB2647016}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC8771D7-0EF2-C6E4-FB0B-1E4EB2647016}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC8771D7-0EF2-C6E4-FB0B-1E4EB2647016}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DD6D643B-2376-F407-83C3-6F4F342D7485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DD6D643B-2376-F407-83C3-6F4F342D7485}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD6D643B-2376-F407-83C3-6F4F342D7485}.Release|Any CPU.ActiveCfg = Release|Any CPU

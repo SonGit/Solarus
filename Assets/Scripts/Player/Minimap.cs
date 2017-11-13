@@ -60,7 +60,7 @@ public class Minimap : MonoBehaviour {
 						break;
 					
 					// .. if not, create a new tracker and pair it with VisibleOnRadar
-					tracker = ObjectPool.instance.GetTracker ();
+					tracker = ObjectPool.instance.GetMMTracker();
 					tracker.t.parent = transform;
 					tracker.Live ();
 					visible.Pair (tracker);

@@ -3,6 +3,7 @@
 /// </summary>
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Events;
 
 
 public class PlayerController : Killable
@@ -15,8 +16,6 @@ public class PlayerController : Killable
 	public float pitchRate = 100.0f;
 	// Specify the speed (multiplier for pitch when steering up/down)
 	public float _speed;
-	// Specify the crosshair 
-	public Transform _crosshair;
 	// Private variables
 	private Rigidbody _cacheRigidbody;
 	// Cache Transform for performance reasons
@@ -50,6 +49,15 @@ public class PlayerController : Killable
 		}
 	}
 
+	public static PlayerController instance;
+
+	public UnityEvent OnLockingEvent = new UnityEvent();
+
+	void Awake()
+	{
+		instance = this;
+	}
+
 	void Start () {		
 		// Cache reference to rigidbody to improve performance
 		_cacheRigidbody = GetComponent<Rigidbody>();
@@ -65,24 +73,34 @@ public class PlayerController : Killable
 
 	void Update () {
 
-		if (Input.GetKeyDown (KeyCode.Space)) {
+		if (Input.GetKey (KeyCode.S)) {
+			_speed -= 5;
+
+			if (_speed < 50)
+				_speed = 50;
+		}
+
+		if (Input.GetKeyDown (KeyCode.W)) {
 			_isThrusting = true;
 		}
 
-		if (Input.GetKeyUp (KeyCode.Space)) {
+		if (Input.GetKeyUp (KeyCode.W)) {
 			_isThrusting = false;
 		}
 
-		if (Input.GetKey (KeyCode.Space)) {
-			t.position += t.forward * Time.deltaTime * _speed * 2.5f;
-		}
-		else
-			t.position += t.forward * Time.deltaTime * _speed ;
+		if (Input.GetKey (KeyCode.W)) {
+			_speed += 5;
 
+			if (_speed > 250)
+				_speed = 250;
+		}
+			
 
 		if (Input.GetKey (KeyCode.R)) {
 			Fire ();
 		}
+
+		t.position += t.forward * Time.deltaTime * _speed ;
 	}
 		
 	void FixedUpdate () {
@@ -103,7 +121,7 @@ public class PlayerController : Killable
 	void Fire()
 	{
 		for (int i = 0; i < _guns.Length; i++) {
-			_guns [i].Fire (_guns [i].transform.position + t.forward);
+			_guns [i].Fire (Camera.main.transform.position + Camera.main.transform.forward * 1000);
 		}
 	}
 
@@ -111,4 +129,6 @@ public class PlayerController : Killable
 	{
 		print ("KILLED");
 	}
+
+
 }

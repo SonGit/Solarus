@@ -8,11 +8,13 @@ public class Chaingun_bullet : Cacheable {
 
 	public float _damage;
 
-	public float _timeToLive = 1.5f; //maximum time before object disappear
+	public float _timeToLive = 1f; //maximum time before object disappear
 
 	public float _timeCount = 0;
 
 	private Vector3 _initPos;
+
+	private float _speed = 400;
 
 	// Use this for initialization
 	void Awake () {
@@ -24,10 +26,13 @@ public class Chaingun_bullet : Cacheable {
 
 		if (_living) {
 			
-			t.position += t.forward * Time.deltaTime * 400;
+			t.position += t.forward * Time.deltaTime * _speed;
+
+			if (_timeCount > .1f)
+				_speed = 2000;
 
 			_timeCount += Time.deltaTime;
-
+			
 			if (_timeCount >= _timeToLive)
 				Destroy ();
 
@@ -44,14 +49,14 @@ public class Chaingun_bullet : Cacheable {
 		Killable killable = collider.GetComponent<Killable> ();
 
 		if (killable != null) {
-			print ("SS");
+	
 			//Create a hit spark particle and activate it
 			HitSparks hs = ObjectPool.instance.GetHitSpark ();
 			hs.transform.position = t.position;
 			hs.Live ();
 			//Rotate spark
 			hs.transform.LookAt(_initPos);
-				
+			print ("CAUSED");
 			//Cause damage
 			killable.OnHit (50);
 
@@ -70,5 +75,6 @@ public class Chaingun_bullet : Cacheable {
 		gameObject.SetActive (true);
 		_timeCount = 0;
 		_initPos = t.position;
+		_speed = 400;
 	}
 }

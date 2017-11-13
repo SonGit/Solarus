@@ -6,7 +6,7 @@ public class Chaingun : MonoBehaviour {
 
 	public Transform target;
 
-	public float _bulletScale;
+	public float _bulletScale = 1;
 
 	public float _fireRate;
 
@@ -26,9 +26,9 @@ public class Chaingun : MonoBehaviour {
 		
 	}
 
-	public void Fire(Vector3 target)
+	public void Fire(Vector3 pos)
 	{
-		StartCoroutine (Fire_async(target));
+		StartCoroutine (Fire_async(pos));
 	}
 
 	IEnumerator Fire_async(Vector3 target)
