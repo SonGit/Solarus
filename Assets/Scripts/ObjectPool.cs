@@ -14,8 +14,6 @@ public class ObjectPool : MonoBehaviour {
 
 	GenericClass<ExplosionObject> _explosionObjs;
 
-	GenericClass<ScoreText> _scoreTexts;
-
 	void Awake()
 	{
 		instance = this;
@@ -26,7 +24,6 @@ public class ObjectPool : MonoBehaviour {
 		_hitSparks = new GenericClass<HitSparks>(ObjectFactory.PrefabType.HitSparks,10);
 		_mmTrackers = new GenericClass<MMTracker>(ObjectFactory.PrefabType.MM_Tracker,10);
 		_explosionObjs = new GenericClass<ExplosionObject>(ObjectFactory.PrefabType.Explosion,10);
-		_scoreTexts = new GenericClass<ScoreText>(ObjectFactory.PrefabType.ScoreText,2);
 	}
 		
 
@@ -44,12 +41,5 @@ public class ObjectPool : MonoBehaviour {
 	{
 		return _explosionObjs.GetObj ();
 	}
-
-	public ScoreText GetScoreText()
-	{
-		if(_scoreTexts == null)
-			_scoreTexts = new GenericClass<ScoreText>(ObjectFactory.PrefabType.ScoreText,2);
 		
-		return _scoreTexts.GetObj ();
-	}
 }

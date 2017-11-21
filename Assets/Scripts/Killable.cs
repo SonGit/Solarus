@@ -29,13 +29,16 @@ public abstract class Killable: MonoBehaviour {
 
 			if(isHitByPlayer)
 			{
-				PlayerController.instance.OnKilledEnemy ();
+				PlayerScore.instance.OnKilledEnemy ();
 			}
 		
 			_hitPoints = 100;
 		
 		} else {
-		//	onHitEvent ();
+			if(isHitByPlayer)
+			{
+				PlayerScore.instance.OnHitEnemy ();
+			}
 		}
 
 	}

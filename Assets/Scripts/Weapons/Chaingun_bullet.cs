@@ -30,9 +30,6 @@ public class Chaingun_bullet : Cacheable {
 			
 			t.position += t.forward * Time.deltaTime * _speed;
 
-			//if (_timeCount > .1f)
-				//_speed = 2000;
-
 			_timeCount += Time.deltaTime;
 			
 			if (_timeCount >= _timeToLive)

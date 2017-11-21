@@ -26,8 +26,6 @@ public class PlayerController : Killable
 	private Chaingun[] _guns;
 	// is player thrusting?
 	private bool isThrusting;
-	// score list UI
-	private ScoreList _scoreList;
 
 	private bool _isThrusting
 	{
@@ -72,7 +70,7 @@ public class PlayerController : Killable
 		t = transform;
 		_cameraShake = GetComponentInChildren<CameraShake> ();
 		_guns = GetComponentsInChildren<Chaingun> ();
-		_scoreList = GetComponentInChildren<ScoreList> ();
+
 		_isThrusting = false;
 	
 	}
@@ -122,6 +120,8 @@ public class PlayerController : Killable
 
 		if(!stop)
 		t.position += t.forward * Time.deltaTime * _speed ;
+
+
 	}
 		
 	void FixedUpdate () {
@@ -178,21 +178,5 @@ public class PlayerController : Killable
 	{
 		_isFiring = false;
 	}
-
-	//Method call from event in Killable.cs
-	public void OnHitEnemy()
-	{
-		//print ("OnHitEnemy");
-		//_scoreList.ShowHitScore ();
-	}
-
-	//Method call from event in Killable.cs
-	public void OnKilledEnemy()
-	{
-		print ("OnKilledEnemy");
-		_scoreList.ShowKillScore ();
-	}
-
-		
 		
 }
