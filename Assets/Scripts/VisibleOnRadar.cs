@@ -42,4 +42,10 @@ public class VisibleOnRadar : MonoBehaviour {
 		return _tracker;
 	}
 
+	public void RemoveTracker()
+	{
+		if(_tracker != null)
+			_tracker.Destroy ();
+	}
+
 }

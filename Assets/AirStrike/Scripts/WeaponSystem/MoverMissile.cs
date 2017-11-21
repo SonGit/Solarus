@@ -17,7 +17,7 @@ public class MoverMissile : Cacheable
 	private int timetorock;
 	private float timeCount = 0;
 	GameObject Target;
-
+	public bool _playerOwned;
 	void Start ()
 	{
 		timeCount = 0;
@@ -64,6 +64,13 @@ public class MoverMissile : Cacheable
 
 		explosion.transform.position = transform.position;
 		explosion.Live ();
+
+		Killable killable = Target.GetComponent<Killable> ();
+
+		if (killable != null) {
+			//Cause damage
+			killable.OnHit (500,_playerOwned);
+		}
 
 		Destroy (gameObject);
 	}

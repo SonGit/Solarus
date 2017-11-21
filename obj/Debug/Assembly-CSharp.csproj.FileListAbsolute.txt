@@ -76,3 +76,5 @@ D:\Solarus\obj\Debug\Assembly-CSharp.dll
 D:\Solarus\obj\Debug\Assembly-CSharp.pdb
 D:\Solarus\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb
 D:\Solarus\Temp\bin\Debug\Google.ProtocolBuffers.dll
+D:\Solarus\Temp\bin\Debug\Vuforia.UnityExtensions.dll
+D:\Solarus\Temp\bin\Debug\Vuforia.UnityExtensions.xml

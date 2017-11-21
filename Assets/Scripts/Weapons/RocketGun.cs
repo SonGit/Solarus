@@ -6,7 +6,7 @@ public class RocketGun : MonoBehaviour {
 	//Specify desired raycast thickness.
 	public float _thickness = 15f;
 	//Specify time for lockon.
-	public float _lockOnTime = 2f;
+	public float _lockOnTime;
 	//Specify max distance for lockon.
 	public float _lockDistance = 25f;
 	//Specify rocket spawnpoint
@@ -18,6 +18,8 @@ public class RocketGun : MonoBehaviour {
 	private bool _allowFire;
 
 	private GameObject[] _enemies;
+
+	public bool _playerOwned;
 
 	// Use this for initialization
 	void Start () {
@@ -74,8 +76,7 @@ public class RocketGun : MonoBehaviour {
 		if (_allowFire && enemyAI != null) {
 
 			if (Input.GetKeyDown (KeyCode.F)) {
-				MakeRocket ();
-				StopLockedOn ();
+				Fire ();
 			}
 
 		}
@@ -93,6 +94,7 @@ public class RocketGun : MonoBehaviour {
 			rocket.transform.position = _spawnPoint.position;
 			rocket.transform.LookAt (enemyAI.transform.position);
 			rocket.SetTarget (enemyAI.gameObject);
+			rocket._playerOwned = _playerOwned;
 			return rocket;
 		} else {
 			return null;
@@ -110,6 +112,15 @@ public class RocketGun : MonoBehaviour {
 		_allowFire = false;
 		prevenemyAI = null;
 		enemyAI = null;
+	}
+
+	public void Fire()
+	{
+		if (_allowFire && enemyAI != null) {
+			MakeRocket ();
+			StopLockedOn ();
+		}
+
 	}
 
 }

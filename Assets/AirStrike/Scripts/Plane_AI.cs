@@ -8,18 +8,26 @@ public class Plane_AI : Killable {
 
 	public RectTransform _targeting;
 
-
 	//Caching 
 	private Camera _camera;
 
 	private bool _beingLocked;
+
 	void Start () {
 		StopLockedOn ();
+
+		//onHitEvent += PlayerController.instance.OnHitEnemy ;
+		//onKilledEvent += PlayerController.instance.OnKilledEnemy ;
 	}
 
 	public override void OnKilled ()
 	{
-//		print ("KILLED");
+		ExplosionObject explosion = ObjectPool.instance.GetExplosionObject ();
+		explosion.transform.position = transform.position;
+		explosion.Live ();
+
+		AISpawner.instance.Spawn ();
+		Destroy (gameObject);
 	}
 
 	void Update()
@@ -57,5 +65,6 @@ public class Plane_AI : Killable {
 			img.color = color;
 		}
 	}
-		
+
+
 }

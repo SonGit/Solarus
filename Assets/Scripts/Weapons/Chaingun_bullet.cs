@@ -14,7 +14,9 @@ public class Chaingun_bullet : Cacheable {
 
 	private Vector3 _initPos;
 
-	private float _speed = 400;
+	public float _speed = 400;
+
+	public bool _playerOwned;
 
 	// Use this for initialization
 	void Awake () {
@@ -28,8 +30,8 @@ public class Chaingun_bullet : Cacheable {
 			
 			t.position += t.forward * Time.deltaTime * _speed;
 
-			if (_timeCount > .1f)
-				_speed = 2000;
+			//if (_timeCount > .1f)
+				//_speed = 2000;
 
 			_timeCount += Time.deltaTime;
 			
@@ -56,9 +58,9 @@ public class Chaingun_bullet : Cacheable {
 			hs.Live ();
 			//Rotate spark
 			hs.transform.LookAt(_initPos);
-			print ("CAUSED");
+
 			//Cause damage
-			killable.OnHit (50);
+			killable.OnHit (_damage,_playerOwned);
 
 			Destroy ();
 		}
@@ -75,6 +77,5 @@ public class Chaingun_bullet : Cacheable {
 		gameObject.SetActive (true);
 		_timeCount = 0;
 		_initPos = t.position;
-		_speed = 400;
 	}
 }

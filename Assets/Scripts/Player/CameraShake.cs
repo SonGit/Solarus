@@ -25,18 +25,21 @@ public class CameraShake : MonoBehaviour {
 
 	public void RumblingNormal()
 	{
+		return;
 		StopAllCoroutines ();
 		StartCoroutine(Rumbling(Utility.RUMBLING_NORMAL_AMOUNT));
 	}
 
 	public void RumblingHigh()
 	{
+		return;
 		StopAllCoroutines ();
 		StartCoroutine(Rumbling(Utility.RUMBLING_HIGH_AMOUNT));
 	}
 
 	public void ShakeHit()
 	{
+		return;
 		ShakeCamera(Utility.SHAKE_HIT_AMOUNT, Utility.SHAKE_HIT_DURATION);
 	}
 

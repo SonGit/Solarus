@@ -12,6 +12,8 @@ public class Chaingun : MonoBehaviour {
 
 	private bool _firing;
 
+	public bool _playerOwned;
+
 	//Cache the bullets
 	private List<Chaingun_bullet> _cgBullets;
 
@@ -46,7 +48,7 @@ public class Chaingun : MonoBehaviour {
 			bullet.transform.position = transform.position;
 			bullet.transform.LookAt (target);
 			bullet.transform.localScale = new Vector3 (_bulletScale, _bulletScale, _bulletScale);
-
+			bullet._playerOwned = _playerOwned;
 			bullet.Live ();
 
 			yield return new WaitForSeconds (_fireRate);

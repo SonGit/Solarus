@@ -8,12 +8,12 @@ public class GenericClass <T> where T : Cacheable
 
 	private ObjectFactory.PrefabType _type;
 
-	public GenericClass(ObjectFactory.PrefabType type)
+	public GenericClass(ObjectFactory.PrefabType type,int num)
 	{
 		_objs = new List<T>();
 		_type = type;
 
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < num; i++) {
 			MakeObj ();
 		}
 	}

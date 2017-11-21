@@ -4,10 +4,16 @@ using UnityEngine;
 
 public abstract class Killable: MonoBehaviour {
 
+	//Events
+	public delegate void BeingHit ();
+	public static event BeingHit onHitEvent;// When got hit
+	public delegate void BeingKilled ();
+	public static event BeingKilled onKilledEvent;// When got killed
+
 	public float _hitPoints = 100;
 	public float _resistance = 0; //resistance value in %
 
-	public void OnHit(float damage)
+	public void OnHit(float damage, bool isHitByPlayer = false)
 	{
 		//In case resistance value is invalid
 		if (_resistance > 100 || _resistance < 0) {
@@ -19,16 +25,30 @@ public abstract class Killable: MonoBehaviour {
 
 		if (_hitPoints <= 0) {
 			OnKilled ();
+			RemoveFromMinimap ();
+
+			if(isHitByPlayer)
+			{
+				PlayerController.instance.OnKilledEnemy ();
+			}
+		
 			_hitPoints = 100;
+		
+		} else {
+		//	onHitEvent ();
 		}
-			
+
 	}
 
 	public abstract void OnKilled ();
 
-	void RemoveFromMinimap()
+	public void RemoveFromMinimap()
 	{
+		VisibleOnRadar visible = this.GetComponent<VisibleOnRadar> ();
 
+		if (visible != null) {
+			visible.RemoveTracker ();
+		}
 	}
 
 }

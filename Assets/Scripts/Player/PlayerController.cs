@@ -26,6 +26,8 @@ public class PlayerController : Killable
 	private Chaingun[] _guns;
 	// is player thrusting?
 	private bool isThrusting;
+	// score list UI
+	private ScoreList _scoreList;
 
 	private bool _isThrusting
 	{
@@ -49,9 +51,12 @@ public class PlayerController : Killable
 		}
 	}
 
+	private bool _isFiring;
+	private bool _isDecelerating;
+
 	public static PlayerController instance;
 
-	public UnityEvent OnLockingEvent = new UnityEvent();
+
 
 	void Awake()
 	{
@@ -67,17 +72,19 @@ public class PlayerController : Killable
 		t = transform;
 		_cameraShake = GetComponentInChildren<CameraShake> ();
 		_guns = GetComponentsInChildren<Chaingun> ();
-
+		_scoreList = GetComponentInChildren<ScoreList> ();
 		_isThrusting = false;
+	
 	}
-
+	public bool stop;
 	void Update () {
 
-		if (Input.GetKey (KeyCode.S)) {
-			_speed -= 5;
+		if (Input.GetKeyDown (KeyCode.S)) {
+			_isDecelerating = true;
+		}
 
-			if (_speed < 50)
-				_speed = 50;
+		if (Input.GetKeyUp (KeyCode.S)) {
+			_isDecelerating = false;
 		}
 
 		if (Input.GetKeyDown (KeyCode.W)) {
@@ -88,18 +95,32 @@ public class PlayerController : Killable
 			_isThrusting = false;
 		}
 
-		if (Input.GetKey (KeyCode.W)) {
-			_speed += 5;
-
-			if (_speed > 250)
-				_speed = 250;
+		if (_isThrusting) {
+			_speed += 1;
 		}
-			
 
-		if (Input.GetKey (KeyCode.R)) {
+		if (_isDecelerating) {
+			_speed -= 1;
+		}
+
+		if (Input.GetKeyDown (KeyCode.R)) {
+			_isFiring = true;
+		}
+
+		if (Input.GetKeyUp (KeyCode.R)) {
+			_isFiring = false;
+		}
+
+		if (_isFiring)
 			Fire ();
-		}
 
+		if (_speed < 50)
+			_speed = 50;
+
+		if (_speed > 150)
+			_speed = 150;
+
+		if(!stop)
 		t.position += t.forward * Time.deltaTime * _speed ;
 	}
 		
@@ -115,7 +136,6 @@ public class PlayerController : Killable
 
 		Quaternion targetRotation = transform.rotation * Quaternion.Euler(new Vector3(-pitch, yaw, -roll));
 		transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 100 * Time.deltaTime);
-
 	}
 
 	void Fire()
@@ -130,5 +150,49 @@ public class PlayerController : Killable
 		print ("KILLED");
 	}
 
+	public void Accelerate()
+	{
+		_isThrusting = true;
+	}
 
+	public void EndAccelerate()
+	{
+		_isThrusting = false;
+	}
+
+	public void Decelerate()
+	{
+		_isDecelerating = true;
+	}
+
+	public void EndDecelerate()
+	{
+		_isDecelerating = false;
+	}
+	public void Firing()
+	{
+		_isFiring = true;
+	}
+
+	public void EndFiring()
+	{
+		_isFiring = false;
+	}
+
+	//Method call from event in Killable.cs
+	public void OnHitEnemy()
+	{
+		//print ("OnHitEnemy");
+		//_scoreList.ShowHitScore ();
+	}
+
+	//Method call from event in Killable.cs
+	public void OnKilledEnemy()
+	{
+		print ("OnKilledEnemy");
+		_scoreList.ShowKillScore ();
+	}
+
+		
+		
 }

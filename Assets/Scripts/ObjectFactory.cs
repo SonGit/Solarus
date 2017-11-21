@@ -19,7 +19,9 @@ public class ObjectFactory: MonoBehaviour {
 		HitSparks,
 		MM_Tracker,
 		Rocket,
-		Explosion
+		Explosion,
+		Fighter,
+		ScoreText
 	}
 
 
@@ -30,7 +32,9 @@ public class ObjectFactory: MonoBehaviour {
 		{ PrefabType.HitSparks, "Prefabs/VfxHitSparks" },
 		{ PrefabType.MM_Tracker, "Prefabs/MM_Tracker" },
 		{ PrefabType.Rocket, "Prefabs/bullet_rocket" },
-		{ PrefabType.Explosion, "Prefabs/Explosion" }
+		{ PrefabType.Explosion, "Prefabs/Explosion" },
+		{ PrefabType.Fighter, "Prefabs/Fighter" },
+		{ PrefabType.ScoreText, "Prefabs/ScoreText" }
 	};
 
 	public GameObject MakeObject(PrefabType type)
