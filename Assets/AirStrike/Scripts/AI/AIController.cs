@@ -162,11 +162,11 @@ public class AIController : MonoBehaviour
 			break;
 		case AIState.Idle:// Free state
 			// free fly and checking the AI is in of Battle Area 
-			if (Vector3.Distance (flight.PositionTarget, this.transform.position) <= FlyDistance) {
+		//	if (Vector3.Distance (flight.PositionTarget, this.transform.position) <= FlyDistance) {
 				// go back to Patrol state
 				AIstate = AIState.Patrol;
 				timestatetemp = Time.time;
-			}
+			//}
 			
 			break;
 		case AIState.Attacking:// Attacking state
