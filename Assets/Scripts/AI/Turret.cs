@@ -12,7 +12,7 @@ public class Turret : Killable {
 
 	private Chaingun[] _guns;
 
-	private bool _seeTarget;
+	public bool _seeTarget;
 
 	private TurretLOS _turretLos;
 

@@ -21,7 +21,8 @@ public class ObjectFactory: MonoBehaviour {
 		Rocket,
 		Explosion,
 		Fighter,
-		ScoreText
+		ScoreText,
+		BattleCenter
 	}
 
 
@@ -34,7 +35,8 @@ public class ObjectFactory: MonoBehaviour {
 		{ PrefabType.Rocket, "Prefabs/bullet_rocket" },
 		{ PrefabType.Explosion, "Prefabs/Explosion" },
 		{ PrefabType.Fighter, "Prefabs/Fighter" },
-		{ PrefabType.ScoreText, "Prefabs/ScoreText" }
+		{ PrefabType.ScoreText, "Prefabs/ScoreText" },
+		{ PrefabType.BattleCenter, "Prefabs/BattleCenter" }
 	};
 
 	public GameObject MakeObject(PrefabType type)

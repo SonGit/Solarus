@@ -46,7 +46,7 @@ public class Minimap : MonoBehaviour {
 		{
 			VisibleOnRadar visible = hitColliders [i].GetComponent<VisibleOnRadar> ();
 
-			if (visible != null) {
+			if (visible != null && visible.isVisible()) {
 				
 //				print (Vector3.Distance(visible.transform.position,_center.position));
 

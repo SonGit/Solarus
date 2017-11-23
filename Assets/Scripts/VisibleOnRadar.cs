@@ -7,6 +7,7 @@ public class VisibleOnRadar : MonoBehaviour {
 	private MMTracker _tracker;
 	private Minimap _minimap;
 	private Transform t;
+	public bool _isVisible;
 
 	// Use this for initialization
 	void Start () {
@@ -24,7 +25,7 @@ public class VisibleOnRadar : MonoBehaviour {
 
 	public bool isVisible()
 	{
-		return true;
+		return _isVisible;
 	}
 
 	public bool isPaired()
@@ -47,5 +48,14 @@ public class VisibleOnRadar : MonoBehaviour {
 		if(_tracker != null)
 			_tracker.Destroy ();
 	}
+
+	public void SetVisible(bool val)
+	{
+		_isVisible = val;
+
+		if (!_isVisible)
+			RemoveTracker ();
+	}
+
 
 }

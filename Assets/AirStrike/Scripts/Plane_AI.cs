@@ -13,9 +13,41 @@ public class Plane_AI : Killable {
 
 	private bool _beingLocked;
 
-	void Start () {
-		StopLockedOn ();
+	private AIController _aiController;
 
+	private bool isAlly;
+
+	public bool _isAlly
+	{
+		get {
+			return isAlly;
+		}
+
+		set {
+			isAlly = value;
+
+			if (isAlly) {
+				transform.tag = "Ally";
+				_aiController.TargetTag = new string[]{ "Enemy" };
+				_radarVisibility.SetVisible (false);
+			
+			} else {
+				transform.tag = "Enemy";	
+				_aiController.TargetTag = new string[]{"Player","Ally"};
+				_radarVisibility.SetVisible (true);
+			}
+
+		}
+	}
+
+	private Bigship _owner;
+
+	private VisibleOnRadar _radarVisibility;
+
+	void Awake () {
+		StopLockedOn ();
+		_aiController = this.GetComponent<AIController> ();
+		_radarVisibility = this.GetComponent<VisibleOnRadar> ();
 		//onHitEvent += PlayerController.instance.OnHitEnemy ;
 		//onKilledEvent += PlayerController.instance.OnKilledEnemy ;
 	}
@@ -26,13 +58,18 @@ public class Plane_AI : Killable {
 		explosion.transform.position = transform.position;
 		explosion.Live ();
 
-		AISpawner.instance.Spawn ();
+		if (_owner != null) {
+			_owner.Spawn ();
+		}
+
 		Destroy (gameObject);
 	}
 
-	void Update()
+	public void Init(BattleCenter bc,bool isAlly,Bigship owner)
 	{
-		
+		_aiController.CenterOfBattle = bc;
+		_isAlly = isAlly;
+		_owner = owner;
 	}
 
 	//UI Stuffs

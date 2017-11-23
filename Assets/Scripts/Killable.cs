@@ -4,12 +4,6 @@ using UnityEngine;
 
 public abstract class Killable: MonoBehaviour {
 
-	//Events
-	public delegate void BeingHit ();
-	public static event BeingHit onHitEvent;// When got hit
-	public delegate void BeingKilled ();
-	public static event BeingKilled onKilledEvent;// When got killed
-
 	public float _hitPoints = 100;
 	public float _resistance = 0; //resistance value in %
 

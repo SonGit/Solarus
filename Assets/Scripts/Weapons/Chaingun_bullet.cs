@@ -47,6 +47,10 @@ public class Chaingun_bullet : Cacheable {
 		
 		Killable killable = collider.GetComponent<Killable> ();
 
+		if (killable == null) {
+			//killable = collider.GetComponentInParent<Killable> ();
+		}
+
 		if (killable != null) {
 	
 			//Create a hit spark particle and activate it
@@ -75,4 +79,5 @@ public class Chaingun_bullet : Cacheable {
 		_timeCount = 0;
 		_initPos = t.position;
 	}
+		
 }

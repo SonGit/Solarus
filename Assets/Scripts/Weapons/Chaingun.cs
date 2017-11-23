@@ -14,6 +14,8 @@ public class Chaingun : MonoBehaviour {
 
 	public bool _playerOwned;
 
+	public Color _bulletColor;
+
 	//Cache the bullets
 	private List<Chaingun_bullet> _cgBullets;
 
