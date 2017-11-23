@@ -35,7 +35,7 @@ public class PlayerScore : MonoBehaviour {
 			if (_accumulatingHitScoreTimecount > _cutoffTime) {
 
 				_accumulatingHitScore = false;
-				print ("_accumulatedHitScore " + _accumulatedHitScore);
+//				print ("_accumulatedHitScore " + _accumulatedHitScore);
 				_scoreList.StopShowScore (ScoreText.ScoreType.Hit);
 			}
 

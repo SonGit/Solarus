@@ -20,7 +20,7 @@ public abstract class Cacheable : MonoBehaviour {
 
 	void Start()
 	{
-		Destroy ();// default state
+	//	Destroy ();// default state
 	}
 
 	public void Destroy()

@@ -46,7 +46,7 @@ public class IntroText : MonoBehaviour {
 		yield return new WaitForSeconds (2);
 		_speed = 0;
 		isThrusting = false;
-		_pc.position = new Vector3 (-15,511,-708);
+		_pc.position = new Vector3 (-1547,292,-1287);
 		_pc.eulerAngles = Vector3.zero;
 		PlayerController.instance.enabled = true;
 		_debugMenu.gameObject.SetActive (true);

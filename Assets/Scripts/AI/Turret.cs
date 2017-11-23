@@ -21,7 +21,7 @@ public class Turret : Killable {
 	private float _timeCount = 0;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		_guns = this.GetComponentsInChildren<Chaingun> ();
 		_turretLos = this.GetComponentInChildren<TurretLOS> ();
 	}
@@ -33,13 +33,20 @@ public class Turret : Killable {
 	// Update is called once per frame
 	void Update () {
 
+		_timeCount += Time.deltaTime;
+
+		if (_timeCount > 1) {
+			_target = null;
+			_timeCount = 0;
+		}
 
 
 		if (_target == null) {
+			//print ("_targetnull");
 			_target = _turretLos.GetTarget ();
 			return;
 		}
-			
+
 		
 		targetDir = _target.transform.position - _turretBase.position;
 		step = _turretRotSpeed * Time.deltaTime;
@@ -47,33 +54,12 @@ public class Turret : Killable {
 		Debug.DrawRay(_turretBase.position, newDir, Color.red);
 		_turretBase.rotation = Quaternion.LookRotation(newDir);
 
-		RaycastHit hit;
-	
-		if (Physics.Raycast (_turretBase.position +_turretBase.forward * 5, _target.transform.position - _turretBase.position, out hit, 10000)) {
-
-			Debug.DrawRay (_turretBase.position +_turretBase.forward * 5 , _target.transform.position - _turretBase.position, Color.yellow);
-//			print (hit.transform.gameObject.name);
-			if (hit.transform.gameObject == _target) {
-				_seeTarget = true;
-			} else {
-				_seeTarget = false;
-			}
-
-		}
-
-		if (!_seeTarget) {
-			_timeCount += Time.deltaTime;
-
-			if (_timeCount >= _timeOut) {
-				_timeCount = 0;
-				_target = _turretLos.GetTarget ();
-			}
-		}
-
-		if(_seeTarget)
+		if(_target!= null)
 		foreach (Chaingun gun in _guns) {
 			gun.Fire (gun.transform.position + gun.transform.forward);
 		}
+
+
 	}
 
 	public override void OnKilled ()

@@ -12,15 +12,7 @@ public class Bigship : MonoBehaviour {
 
 	public float _currDistanceFromTarget;
 
-	public BigshipState _state;
-
-	public enum BigshipState
-	{
-		Idle,
-		Going,
-		Prepare,
-		Attacking
-	}
+	List<Plane_AI> _planeCache;
 
 	public bool stop;
 
@@ -37,9 +29,11 @@ public class Bigship : MonoBehaviour {
 		t = transform;
 		_bc = this.GetComponentInChildren<BattleCenter> ();
 
-		for(int i = 0 ; i < 5 ; i++)
+		_planeCache = new List <Plane_AI>();
+
+		for(int i = 0 ; i < 8 ; i++)
 		{
-			//Spawn ();
+			_planeCache.Add( Create() );
 			yield return new WaitForSeconds (1);
 		}
 	}
@@ -66,13 +60,20 @@ public class Bigship : MonoBehaviour {
 
 			t.position = Vector3.Lerp (t.position, _targetShip.t.position, Time.deltaTime * _speed);
 
-			_shipBase.localRotation = Quaternion.RotateTowards(_shipBase.localRotation, Quaternion.Euler(new Vector3(-90,0,0)), 50 * Time.deltaTime);
+		
+
+			if (_currDistanceFromTarget < _minDistanceFromTarget + 700 ) {
+				_shipBase.localRotation = Quaternion.RotateTowards (_shipBase.localRotation, Quaternion.Euler (new Vector3 (-90, 90, 0)), 2 * Time.deltaTime);
+			} else {
+				_shipBase.localRotation = Quaternion.RotateTowards(_shipBase.localRotation, Quaternion.Euler(new Vector3(-90,0,0)), 2 * Time.deltaTime);
+			}
+				
 
 		} else {
 			
 			//t.rotation = Quaternion.RotateTowards(t.rotation, Quaternion.Euler(new Vector3(0,90,0)), 50 * Time.deltaTime);
 
-			_shipBase.localRotation = Quaternion.RotateTowards(_shipBase.localRotation, Quaternion.Euler(new Vector3(-90,90,0)), 10 * Time.deltaTime);
+			_shipBase.localRotation = Quaternion.RotateTowards(_shipBase.localRotation, Quaternion.Euler(new Vector3(-90,90,0)), 2 * Time.deltaTime);
 		}
 
 		UpdateBattleCenterPos ();
@@ -87,12 +88,21 @@ public class Bigship : MonoBehaviour {
 	}
 
 
-	public void Spawn()
+	public Plane_AI Create()
 	{
 		GameObject go = ObjectFactory.instance.MakeObject (ObjectFactory.PrefabType.Fighter);
 		go.transform.position = new Vector3 (transform.position.x + Random.Range(100,400),transform.position.y + Random.Range(100,400),transform.position.z + Random.Range(100,400));
 		Plane_AI AI = go.GetComponent<Plane_AI> ();
 		AI.Init (_bc,isAlly,this);
+
+		return AI;
+	}
+
+	public void Spawn(Plane_AI AI)
+	{
+		AI.transform.position = new Vector3 (transform.position.x + Random.Range(100,400),transform.position.y + Random.Range(100,400),transform.position.z + Random.Range(100,400));
+		AI.Init (_bc,isAlly,this);
+		AI.gameObject.SetActive (true);
 	}
 
 		

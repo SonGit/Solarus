@@ -44,6 +44,8 @@ public class Plane_AI : Killable {
 
 	private VisibleOnRadar _radarVisibility;
 
+	public bool _living;
+
 	void Awake () {
 		StopLockedOn ();
 		_aiController = this.GetComponent<AIController> ();
@@ -58,11 +60,14 @@ public class Plane_AI : Killable {
 		explosion.transform.position = transform.position;
 		explosion.Live ();
 
-		if (_owner != null) {
-			_owner.Spawn ();
-		}
+		//Destroy (gameObject);
+		transform.position = new Vector3(9999,9999,9999);
+		_living = false;
+		gameObject.SetActive(false);
 
-		Destroy (gameObject);
+		if (_owner != null) {
+			_owner.Spawn (this);
+		}
 	}
 
 	public void Init(BattleCenter bc,bool isAlly,Bigship owner)
@@ -70,6 +75,7 @@ public class Plane_AI : Killable {
 		_aiController.CenterOfBattle = bc;
 		_isAlly = isAlly;
 		_owner = owner;
+		_living = true;
 	}
 
 	//UI Stuffs
