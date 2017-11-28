@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class TurretLOS : MonoBehaviour {
 	
-	public string _enemyTag;
+	public List<Killable> _enemyInRadius;
 
-	public List<GameObject> _enemyInRadius;
+	public Collider _ownCollider;
+
+	Turret turret;
 
 	Transform t;
 	// Use this for initialization
 	void Start () {
 		t = transform;
+		turret = this.GetComponentInParent<Turret> ();
 	}
 	
 	// Update is called once per frame
@@ -21,36 +24,53 @@ public class TurretLOS : MonoBehaviour {
 	GameObject go;
 	private void OnTriggerEnter(Collider collision)
 	{
-		if (collision.tag == _enemyTag) {
-			_enemyInRadius.Add (collision.gameObject);
-		}
+			Killable obj = collision.GetComponent<Killable> ();
+			if (obj != null) {
+			if(_enemyInRadius.IndexOf (obj) == -1)
+				_enemyInRadius.Add (obj);
+			}
+
 	}
 
 	private void OnTriggerExit(Collider collision)
 	{
-		if (collision.tag == _enemyTag) {
-			_enemyInRadius.Remove (collision.gameObject);
+			Killable obj = collision.GetComponent<Killable> ();
+		if (obj != null) {
+
+			_enemyInRadius.Remove (obj);
 		}
+	
 	}
 
-	List<GameObject> _possibleTargets = new List<GameObject>();
+	public List<Killable> _possibleTargets;
+	Killable k;
 	public GameObject GetTarget()
 	{
-		_possibleTargets = new List<GameObject> ();
+		_possibleTargets = new List<Killable> ();
 
-		foreach(GameObject enemyObj in _enemyInRadius)
+		foreach(Killable enemyObj in _enemyInRadius)
 		{
 			RaycastHit hit;
 
-			if (Physics.Raycast (t.position + t.forward * 5, enemyObj.transform.position - t.position, out hit, 10000)) {
-				_possibleTargets.Add (enemyObj);
+			if (Physics.Raycast (t.position , enemyObj.transform.position - t.position, out hit, 10000)) {
+
+				k = hit.transform.GetComponent<Killable> ();
+
+				if (k != null && k == enemyObj) {
+					if(FactionRelationshipManager.IsHostile (turret._faction,enemyObj._faction))
+						_possibleTargets.Add (enemyObj);
+				}
+		//		print (hit.transform.name);
+
 			}
+
+		//	Debug.DrawRay (t.position , enemyObj.transform.position - t.position,Color.yellow);
 		}
 
 		if (_possibleTargets.Count > 0) {
-			return _possibleTargets[Random.Range(0,_possibleTargets.Count)];
+			return _possibleTargets[Random.Range(0,_possibleTargets.Count)].gameObject;
 		}
-//		print ("NULL?");
+		//_enemyInRadius = new List<Killable> ();
 		return null;
 	}
 }

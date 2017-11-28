@@ -51,7 +51,7 @@ public class Turret : Killable {
 		targetDir = _target.transform.position - _turretBase.position;
 		step = _turretRotSpeed * Time.deltaTime;
 		newDir = Vector3.RotateTowards(_turretBase.forward, targetDir, step, 0.0F);
-		Debug.DrawRay(_turretBase.position, newDir, Color.red);
+
 		_turretBase.rotation = Quaternion.LookRotation(newDir);
 
 		if(_target!= null)
@@ -68,7 +68,7 @@ public class Turret : Killable {
 		explosion.transform.position = _turretBase.position;
 		explosion.Live ();
 
-		Destroy (gameObject);
+		gameObject.SetActive (false);
 	}
 
 }

@@ -4,6 +4,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 
 public class PlayerController : Killable
@@ -40,6 +41,7 @@ public class PlayerController : Killable
 
 			if (_cameraShake != null) 
 			{
+				if(_introing)
 				if (isThrusting) {
 					_cameraShake.RumblingHigh ();
 				} else {
@@ -51,10 +53,14 @@ public class PlayerController : Killable
 
 	private bool _isFiring;
 	private bool _isDecelerating;
+	public bool _introing;
 
 	public static PlayerController instance;
 
+	public Text _HPText;
+	public Text _hitText;
 
+	private PlayerDie _playerDie;
 
 	void Awake()
 	{
@@ -70,6 +76,7 @@ public class PlayerController : Killable
 		t = transform;
 		_cameraShake = GetComponentInChildren<CameraShake> ();
 		_guns = GetComponentsInChildren<Chaingun> ();
+		_playerDie = GetComponentInChildren<PlayerDie> ();
 
 		_isThrusting = false;
 	
@@ -101,22 +108,22 @@ public class PlayerController : Killable
 			_speed -= 1;
 		}
 
-		if (Input.GetKeyDown (KeyCode.R)) {
+		if (Input.GetKeyDown (KeyCode.R) || Input.GetMouseButtonDown(0)) {
 			_isFiring = true;
 		}
 
-		if (Input.GetKeyUp (KeyCode.R)) {
+		if (Input.GetKeyUp (KeyCode.R)|| Input.GetMouseButtonUp(0)) {
 			_isFiring = false;
 		}
 
 		if (_isFiring)
 			Fire ();
 
-		if (_speed < 50)
-			_speed = 50;
+		if (_speed < 25)
+			_speed = 25;
 
-		if (_speed > 150)
-			_speed = 150;
+		if (_speed > 200)
+			_speed = 200;
 
 		if(!stop)
 		t.position += t.forward * Time.deltaTime * _speed ;
@@ -136,6 +143,7 @@ public class PlayerController : Killable
 
 		Quaternion targetRotation = transform.rotation * Quaternion.Euler(new Vector3(-pitch, yaw, -roll));
 		transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 100 * Time.deltaTime);
+		_HPText.text = _hitPoints + "";
 	}
 
 	void Fire()
@@ -148,6 +156,7 @@ public class PlayerController : Killable
 	public override void OnKilled ()
 	{
 		print ("KILLED");
+		_playerDie.ShowDie ();
 	}
 
 	public void Accelerate()
@@ -177,6 +186,28 @@ public class PlayerController : Killable
 	public void EndFiring()
 	{
 		_isFiring = false;
+	}
+
+	public override void OnHitAdditional()
+	{
+		print ("I'M HIT");
+		_cameraShake.ShakeHit ();
+		StartCoroutine (ShowHit());
+	}
+
+	IEnumerator ShowHit()
+	{
+		_hitText.enabled = true;
+		yield return new WaitForSeconds (1);
+		_hitText.enabled = false;
+	}
+
+	private void OnTriggerEnter(Collider collision)
+	{
+		BigshipHealth bsh = collision.GetComponent<BigshipHealth> ();
+
+		if (bsh != null)
+			_hitPoints = -1;
 	}
 		
 }

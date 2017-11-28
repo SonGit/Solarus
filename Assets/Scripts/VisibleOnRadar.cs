@@ -17,6 +17,7 @@ public class VisibleOnRadar : MonoBehaviour {
 
 	void FixedUpdate()
 	{
+		if(_minimap != null)
 		if (!_minimap.IsInRadius (t.position)) {
 			if(_tracker != null)
 			_tracker.Destroy ();

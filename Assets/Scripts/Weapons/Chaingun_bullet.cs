@@ -16,7 +16,7 @@ public class Chaingun_bullet : Cacheable {
 
 	public float _speed = 400;
 
-	public bool _playerOwned;
+	public Killable _Owner;
 
 	// Use this for initialization
 	void Awake () {
@@ -47,21 +47,25 @@ public class Chaingun_bullet : Cacheable {
 		
 		Killable killable = collider.GetComponent<Killable> ();
 
-		if (killable == null) {
-			//killable = collider.GetComponentInParent<Killable> ();
-		}
+
 
 		if (killable != null) {
-	
+			// If friendly fire, ignore
+			if (!FactionRelationshipManager.IsHostile (_Owner._faction,killable._faction)) {
+				return;
+			}
 			//Create a hit spark particle and activate it
 			HitSparks hs = ObjectPool.instance.GetHitSpark ();
-			hs.transform.position = t.position;
-			hs.Live ();
-			//Rotate spark
-			hs.transform.LookAt(_initPos);
+			if (hs != null) {
+				hs.transform.position = t.position;
+				hs.Live ();
+				//Rotate spark
+				hs.transform.LookAt(_initPos);
+			}
+
 
 			//Cause damage
-			killable.OnHit (_damage,_playerOwned);
+			killable.OnHit (_damage,_Owner);
 
 			Destroy ();
 		}

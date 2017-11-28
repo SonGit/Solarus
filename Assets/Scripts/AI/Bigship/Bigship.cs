@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Bigship : MonoBehaviour {
 
+	public Faction _faction;
+
 	public Bigship _targetShip;
 
 	public float _minDistanceFromTarget = 900;
@@ -31,7 +33,7 @@ public class Bigship : MonoBehaviour {
 
 		_planeCache = new List <Plane_AI>();
 
-		for(int i = 0 ; i < 8 ; i++)
+		for(int i = 0 ; i < 13 ; i++)
 		{
 			_planeCache.Add( Create() );
 			yield return new WaitForSeconds (1);
@@ -62,7 +64,7 @@ public class Bigship : MonoBehaviour {
 
 		
 
-			if (_currDistanceFromTarget < _minDistanceFromTarget + 700 ) {
+			if (_currDistanceFromTarget < _minDistanceFromTarget + 1000 ) {
 				_shipBase.localRotation = Quaternion.RotateTowards (_shipBase.localRotation, Quaternion.Euler (new Vector3 (-90, 90, 0)), 2 * Time.deltaTime);
 			} else {
 				_shipBase.localRotation = Quaternion.RotateTowards(_shipBase.localRotation, Quaternion.Euler(new Vector3(-90,0,0)), 2 * Time.deltaTime);
@@ -91,17 +93,25 @@ public class Bigship : MonoBehaviour {
 	public Plane_AI Create()
 	{
 		GameObject go = ObjectFactory.instance.MakeObject (ObjectFactory.PrefabType.Fighter);
-		go.transform.position = new Vector3 (transform.position.x + Random.Range(100,400),transform.position.y + Random.Range(100,400),transform.position.z + Random.Range(100,400));
+		go.transform.position = new Vector3 (transform.position.x + Random.Range(100,600),transform.position.y + Random.Range(100,400),transform.position.z + Random.Range(100,400));
 		Plane_AI AI = go.GetComponent<Plane_AI> ();
-		AI.Init (_bc,isAlly,this);
+		AI.Init (_bc,this);
 
 		return AI;
 	}
 
+	public float _penalty = 0;
 	public void Spawn(Plane_AI AI)
 	{
+		StartCoroutine (Spawn_async(AI));
+	}
+
+	IEnumerator Spawn_async(Plane_AI AI)
+	{
+		_penalty += 0.2f;
+		yield return new WaitForSeconds (_penalty);
 		AI.transform.position = new Vector3 (transform.position.x + Random.Range(100,400),transform.position.y + Random.Range(100,400),transform.position.z + Random.Range(100,400));
-		AI.Init (_bc,isAlly,this);
+		AI.Init (_bc,this);
 		AI.gameObject.SetActive (true);
 	}
 

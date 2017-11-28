@@ -19,13 +19,15 @@ public class Clamp : MonoBehaviour {
 	float _distance = 0;
 	float _scale = 1;
 	public float testNum = 0;
+	public bool special;
 	// Update is called once per frame
 	void FixedUpdate () {
-		if (ai.tag != "Enemy") {
+		// If enemy, show targeting
+		if(ai != null)
+		if (!FactionRelationshipManager.IsHostile (ai._faction,Faction.PLAYER)) {
 			t.localScale = Vector3.zero;
 			return;
 		}
-
 		
 		t.LookAt(transform.position +cameraT.rotation * Vector3.forward,
 			cameraT.rotation * Vector3.up);
@@ -33,12 +35,19 @@ public class Clamp : MonoBehaviour {
 
 		_distance = Vector3.Distance(t.position,cameraT.position);
 
-		if (_distance > 110f) {
+		if (special)
+		if (_distance < 3000f) {
+			t.localScale = Vector3.zero;
+		} else {
+			t.localScale = Vector3.one;
+		}
 
-			_scale = _distance / testNum;
-			t.localScale = new Vector3 (_scale, _scale, _scale);
+		//if (_distance > 110f) {
 
-		} //else {
+		//	_scale = _distance / testNum;
+			//t.localScale = new Vector3 (_scale, _scale, _scale);
+
+		//} //else {
 			//_scale = 1;
 			//t.localScale = new Vector3 (_scale, _scale, _scale);
 		//}

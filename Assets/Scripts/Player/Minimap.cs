@@ -6,8 +6,6 @@ public class Minimap : MonoBehaviour {
 
 	public static Minimap instance;
 
-	// Prefab to create on Minimap
-	public GameObject prefab;
 	// center of the minimap
 	public Transform _center;
 	// Tag of obj to track

@@ -17,7 +17,9 @@ public class MoverMissile : Cacheable
 	private int timetorock;
 	private float timeCount = 0;
 	GameObject Target;
-	public bool _playerOwned;
+
+	public Killable _Owner;
+
 	void Start ()
 	{
 		timeCount = 0;
@@ -69,7 +71,7 @@ public class MoverMissile : Cacheable
 
 		if (killable != null) {
 			//Cause damage
-			killable.OnHit (500,_playerOwned);
+			killable.OnHit (500,_Owner);
 		}
 
 		Destroy (gameObject);

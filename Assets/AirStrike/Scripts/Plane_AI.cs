@@ -15,31 +15,6 @@ public class Plane_AI : Killable {
 
 	private AIController _aiController;
 
-	private bool isAlly;
-
-	public bool _isAlly
-	{
-		get {
-			return isAlly;
-		}
-
-		set {
-			isAlly = value;
-
-			if (isAlly) {
-				transform.tag = "Ally";
-				_aiController.TargetTag = new string[]{ "Enemy" };
-				_radarVisibility.SetVisible (false);
-			
-			} else {
-				transform.tag = "Enemy";	
-				_aiController.TargetTag = new string[]{"Player","Ally"};
-				_radarVisibility.SetVisible (true);
-			}
-
-		}
-	}
-
 	private Bigship _owner;
 
 	private VisibleOnRadar _radarVisibility;
@@ -50,8 +25,6 @@ public class Plane_AI : Killable {
 		StopLockedOn ();
 		_aiController = this.GetComponent<AIController> ();
 		_radarVisibility = this.GetComponent<VisibleOnRadar> ();
-		//onHitEvent += PlayerController.instance.OnHitEnemy ;
-		//onKilledEvent += PlayerController.instance.OnKilledEnemy ;
 	}
 
 	public override void OnKilled ()
@@ -70,12 +43,18 @@ public class Plane_AI : Killable {
 		}
 	}
 
-	public void Init(BattleCenter bc,bool isAlly,Bigship owner)
+	public void Init(BattleCenter bc,Bigship owner)
 	{
 		_aiController.CenterOfBattle = bc;
-		_isAlly = isAlly;
 		_owner = owner;
 		_living = true;
+		_faction = owner._faction;
+
+		if (FactionRelationshipManager.IsHostile (Faction.PLAYER, _faction)) {
+			_radarVisibility.SetVisible (true);
+		} else {
+			_radarVisibility.SetVisible (false);
+		}
 	}
 
 	//UI Stuffs

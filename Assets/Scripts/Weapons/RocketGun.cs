@@ -19,11 +19,12 @@ public class RocketGun : MonoBehaviour {
 
 	private GameObject[] _enemies;
 
-	public bool _playerOwned;
+	public Killable _owner;
 
 	// Use this for initialization
 	void Start () {
 		_enemies = GameObject.FindGameObjectsWithTag ("Enemy");
+		_owner = this.GetComponentInParent<Killable> ();
 	}
 	// For caching purposes
 	private Plane_AI enemyAI;
@@ -94,7 +95,7 @@ public class RocketGun : MonoBehaviour {
 			rocket.transform.position = _spawnPoint.position;
 			rocket.transform.LookAt (enemyAI.transform.position);
 			rocket.SetTarget (enemyAI.gameObject);
-			rocket._playerOwned = _playerOwned;
+			rocket._Owner = _owner;
 			return rocket;
 		} else {
 			return null;

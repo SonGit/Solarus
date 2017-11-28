@@ -9,13 +9,16 @@ public class IntroText : MonoBehaviour {
 	public Typewriter killtext;
 	public ParticleSystem particle;
 	public ParticleSystem[]  fogParticles;
+	public GameObject _arrow;
 	Transform _pc;
 
 	// Use this for initialization
 	IEnumerator Start () {
+		_arrow.SetActive (false);
 		_acc.enabled = false;
 		_debugMenu.gameObject.SetActive (false);
 		_pc = PlayerController.instance.transform;
+		PlayerController.instance._introing = true;
 		PlayerController.instance.enabled = false;
 		_speed = 50;
 		_pc.position = new Vector3 (3000,3000,3000);
@@ -52,6 +55,8 @@ public class IntroText : MonoBehaviour {
 		_debugMenu.gameObject.SetActive (true);
 		_acc.enabled = true;
 		TurnFogParticle(true);
+		_arrow.SetActive (true);
+		PlayerController.instance._introing = false;
 	}
 
 	public float _speed = 0;

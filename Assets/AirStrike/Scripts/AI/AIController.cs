@@ -4,6 +4,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum AIState
 {
@@ -52,6 +53,7 @@ public class AIController : MonoBehaviour
 	private Vector3 targetpositionTemp;
 
 	public Chaingun[] chains;
+	private Plane_AI plane_ai;
 	
 	void Start ()
 	{
@@ -65,6 +67,7 @@ public class AIController : MonoBehaviour
 			CenterOfBattle = btcenter.gameObject.GetComponent<BattleCenter>();
 		}
 		chains = this.GetComponentsInChildren<Chaingun> ();
+		plane_ai = this.GetComponent<Plane_AI> ();
 	}
 	
 	void TargetBehaviorCal ()
@@ -97,7 +100,7 @@ public class AIController : MonoBehaviour
 	}
 	
 	private float dot;
-	
+	List<Killable> objs;
 	
 	void Update ()
 	{
@@ -122,13 +125,27 @@ public class AIController : MonoBehaviour
 		// AI state machine
 		switch (AIstate) {
 		case AIState.Patrol:// AI will free flying and looking for a target.
-			for (int t = 0; t<TargetTag.Length; t++) {
+
 				// Find only gameobject by Tag within TargetTag[]
-				if (GameObject.FindGameObjectsWithTag (TargetTag [t]).Length > 0) {
+
 					// get all objects as same tag as TargetTag[i]
-					GameObject[] objs = GameObject.FindGameObjectsWithTag (TargetTag [t]);
+					objs = new List<Killable>();
+
+					GameObject[] gos = GameObject.FindGameObjectsWithTag ("Fighter");
+
+					foreach(GameObject go in gos)
+					{
+						Killable killable = go.GetComponent<Killable> ();
+						if (killable != null) {
+							if (FactionRelationshipManager.IsHostile (killable._faction, plane_ai._faction)) {
+								objs.Add (killable);
+							}
+						}
+					}
+
+
 					float distance = int.MaxValue;
-					for (int i = 0; i < objs.Length; i++) {
+					for (int i = 0; i < objs.Count; i++) {
 						if (objs [i]) {
 							// make it delay by TimeToLock
 							if (timetolockcount + TimeToLock < Time.time) {
@@ -140,7 +157,7 @@ public class AIController : MonoBehaviour
 										// i random a bit because i want this AI look hesitate. so you can remove "Random.Range (0, 100) > 80" if you want this AI select every target.
 										if (distance > dis && Random.Range (0, 100) > 80) {
 											distance = dis;
-											Target = objs [i];
+											Target = objs [i].gameObject;
 											flight.FollowTarget = true;
 											// go to Attacking state
 											AIstate = AIState.Attacking;
@@ -157,8 +174,8 @@ public class AIController : MonoBehaviour
 							shootTarget (objs [i].transform.position);
 						}
 					}
-				}
-			}
+				
+			
 			break;
 		case AIState.Idle:// Free state
 			// free fly and checking the AI is in of Battle Area 

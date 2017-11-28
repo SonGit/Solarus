@@ -6,6 +6,8 @@ public class BigshipHealth : Killable {
 
 	Bigship _bs;
 
+	public GameObject _explode;
+
 	// Use this for initialization
 	void Start () {
 		_bs = this.GetComponentInParent<Bigship> ();
@@ -17,7 +19,16 @@ public class BigshipHealth : Killable {
 	}
 	public override void OnKilled ()
 	{
+		if(_explode != null)
+		_explode.SetActive (true);
 
+		if (_faction == Faction.ENEMY) {
+			print ("WIN");
+		}
+
+		if (_faction == Faction.ALLY) {
+			print ("LOSE");
+		}
 	}
 
 }
