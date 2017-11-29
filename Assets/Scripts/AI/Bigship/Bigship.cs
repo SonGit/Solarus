@@ -24,7 +24,6 @@ public class Bigship : MonoBehaviour {
 
 	BattleCenter _bc;
 
-	public bool isAlly;
 
 	// Use this for initialization
 	IEnumerator Start () {
@@ -38,6 +37,7 @@ public class Bigship : MonoBehaviour {
 			_planeCache.Add( Create() );
 			yield return new WaitForSeconds (1);
 		}
+
 	}
 
 	// For caching

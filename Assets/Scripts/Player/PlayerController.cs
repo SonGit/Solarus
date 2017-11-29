@@ -61,7 +61,7 @@ public class PlayerController : Killable
 	public Text _hitText;
 
 	private PlayerDie _playerDie;
-
+	private PlayerWin _playerWin;
 	void Awake()
 	{
 		instance = this;
@@ -77,9 +77,9 @@ public class PlayerController : Killable
 		_cameraShake = GetComponentInChildren<CameraShake> ();
 		_guns = GetComponentsInChildren<Chaingun> ();
 		_playerDie = GetComponentInChildren<PlayerDie> ();
-
+		_playerWin = GetComponentInChildren<PlayerWin> ();
 		_isThrusting = false;
-	
+		//Killed ();
 	}
 	public bool stop;
 	void Update () {
@@ -153,12 +153,6 @@ public class PlayerController : Killable
 		}
 	}
 
-	public override void OnKilled ()
-	{
-		print ("KILLED");
-		_playerDie.ShowDie ();
-	}
-
 	public void Accelerate()
 	{
 		_isThrusting = true;
@@ -206,8 +200,28 @@ public class PlayerController : Killable
 	{
 		BigshipHealth bsh = collision.GetComponent<BigshipHealth> ();
 
-		if (bsh != null)
-			_hitPoints = -1;
+		if (bsh != null) {
+			Killed ();
+		}
+			
 	}
-		
+
+	public override void OnKilled ()
+	{
+		print ("KILLED");
+		_playerDie.ShowDie ();
+		stop = true;
+
+		ExplosionObject explosion = ObjectPool.instance.GetExplosionObject ();
+
+		explosion.transform.position = transform.position;
+		explosion.transform.localScale = new Vector3 (10,10,10);
+		explosion.Live ();
+	}
+
+	public void Win()
+	{
+		_playerWin.ShowWin ();
+	}
+
 }

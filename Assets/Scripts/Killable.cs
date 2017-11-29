@@ -35,8 +35,8 @@ public abstract class Killable: MonoBehaviour {
 		_hitPoints -= (damage - (damage * _resistance)/100);
 
 		if (_hitPoints <= 0) {
-			OnKilled ();
-			RemoveFromMinimap ();
+			
+			Killed ();
 
 			if (attacker._faction == Faction.PLAYER) {
 				PlayerScore.instance.OnKilledEnemy ();
@@ -67,6 +67,12 @@ public abstract class Killable: MonoBehaviour {
 	public virtual void OnHitAdditional()
 	{
 
+	}
+
+	public void Killed()
+	{
+		OnKilled ();
+		RemoveFromMinimap ();
 	}
 
 }
