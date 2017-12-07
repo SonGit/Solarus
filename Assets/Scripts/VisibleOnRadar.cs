@@ -37,6 +37,7 @@ public class VisibleOnRadar : MonoBehaviour {
 	public void Pair(MMTracker tracker)
 	{
 		_tracker = tracker;
+		_tracker._tracking = transform;
 	}
 
 	public MMTracker GetTracker()

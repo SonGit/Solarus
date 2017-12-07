@@ -17,15 +17,34 @@ public class Plane_AI : Killable {
 
 	private Bigship _owner;
 
-	private VisibleOnRadar _radarVisibility;
-
 	public bool _living;
+
+	Transform _playerTransform;
 
 	void Awake () {
 		StopLockedOn ();
 		_aiController = this.GetComponent<AIController> ();
-		_radarVisibility = this.GetComponent<VisibleOnRadar> ();
 	}
+
+	void Start()
+	{
+		_playerTransform = PlayerController.instance.transform;
+	}
+
+	void Update()
+	{
+		//If enemy, show on/off screen indicators based on distance
+		if (_faction == Faction.ENEMY) {
+			float distanceToPlayer = Vector3.Distance (transform.position,_playerTransform.position);
+
+			if (distanceToPlayer < 1000) {
+				
+			} else {
+
+			}
+		}
+	}
+
 
 	public override void OnKilled ()
 	{
@@ -50,11 +69,6 @@ public class Plane_AI : Killable {
 		_living = true;
 		_faction = owner._faction;
 
-		if (FactionRelationshipManager.IsHostile (Faction.PLAYER, _faction)) {
-			_radarVisibility.SetVisible (true);
-		} else {
-			_radarVisibility.SetVisible (false);
-		}
 	}
 
 	//UI Stuffs

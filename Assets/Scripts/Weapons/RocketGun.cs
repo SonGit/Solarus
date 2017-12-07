@@ -72,7 +72,7 @@ public class RocketGun : MonoBehaviour {
 
 		}
 		
-		Debug.DrawRay (Camera.main.transform.position, Camera.main.transform.forward * 5000 ,Color.red);
+		//Debug.DrawRay (Camera.main.transform.position, Camera.main.transform.forward * 5000 ,Color.red);
 
 		if (_allowFire && enemyAI != null) {
 

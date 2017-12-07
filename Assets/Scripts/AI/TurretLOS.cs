@@ -22,7 +22,7 @@ public class TurretLOS : MonoBehaviour {
 		
 	}
 	GameObject go;
-	private void OnTriggerEnter(Collider collision)
+	void OnTriggerEnter(Collider collision)
 	{
 			Killable obj = collision.GetComponent<Killable> ();
 			if (obj != null) {

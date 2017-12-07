@@ -22,7 +22,8 @@ public class ObjectFactory: MonoBehaviour {
 		Explosion,
 		Fighter,
 		ScoreText,
-		BattleCenter
+		BattleCenter,
+		OffScreenIndicator
 	}
 
 
@@ -36,7 +37,8 @@ public class ObjectFactory: MonoBehaviour {
 		{ PrefabType.Explosion, "Prefabs/Explosion" },
 		{ PrefabType.Fighter, "Prefabs/Fighter" },
 		{ PrefabType.ScoreText, "Prefabs/ScoreText" },
-		{ PrefabType.BattleCenter, "Prefabs/BattleCenter" }
+		{ PrefabType.BattleCenter, "Prefabs/BattleCenter" },
+		{ PrefabType.OffScreenIndicator, "Prefabs/OffScreenIndicator" },
 	};
 
 	public GameObject MakeObject(PrefabType type)

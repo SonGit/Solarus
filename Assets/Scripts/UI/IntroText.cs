@@ -14,6 +14,7 @@ public class IntroText : MonoBehaviour {
 
 	// Use this for initialization
 	IEnumerator Start () {
+		UnityEngine.XR.InputTracking.Recenter();
 		_arrow.SetActive (false);
 		_acc.enabled = false;
 		_debugMenu.gameObject.SetActive (false);

@@ -13,8 +13,6 @@ public class PlayerDebug : MonoBehaviour {
 	public BigshipHealth _allyShipHP;
 	public BigshipHealth _enemyShipHP;
 
-	public Transform _arrow;
-
 	Vector3 _initPos;
 	// Use this for initialization
 	void Start () {
@@ -28,8 +26,6 @@ public class PlayerDebug : MonoBehaviour {
 		_allyShipHPText.text = _allyShipHP._hitPoints + "";
 		_enemyShipHPText.text = _enemyShipHP._hitPoints+ "";
 
-		_arrow.LookAt (_enemyShipHP.transform);
-		_arrow.localEulerAngles = new Vector3 (_arrow.localEulerAngles.x,_arrow.localEulerAngles.y,0);
 	}
 
 	public void ReturnToInit()

@@ -32,7 +32,7 @@ public class Bigship : MonoBehaviour {
 
 		_planeCache = new List <Plane_AI>();
 
-		for(int i = 0 ; i < 13 ; i++)
+		for(int i = 0 ; i < 4 ; i++)
 		{
 			_planeCache.Add( Create() );
 			yield return new WaitForSeconds (1);
@@ -47,7 +47,7 @@ public class Bigship : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (stop)
+		if (stop || _targetShip == null)
 			return;
 
 		_currDistanceFromTarget = Vector3.Distance (t.position, _targetShip.t.position);
@@ -108,7 +108,7 @@ public class Bigship : MonoBehaviour {
 
 	IEnumerator Spawn_async(Plane_AI AI)
 	{
-		_penalty += 0.2f;
+		_penalty += 0.1f;
 		yield return new WaitForSeconds (_penalty);
 		AI.transform.position = new Vector3 (transform.position.x + Random.Range(100,400),transform.position.y + Random.Range(100,400),transform.position.z + Random.Range(100,400));
 		AI.Init (_bc,this);

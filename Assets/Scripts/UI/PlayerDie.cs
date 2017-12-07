@@ -22,7 +22,7 @@ public class PlayerDie : MonoBehaviour {
 
 	public void ShowDie()
 	{
-		_mouseLook.enabled = false;
+//		_mouseLook.enabled = false;
 		StartCoroutine (Retrying_async());
 	}
 	
@@ -32,11 +32,11 @@ public class PlayerDie : MonoBehaviour {
 		_camera.transform.localPosition = new Vector3(0,60,0);
 		_camera.transform.localEulerAngles = new Vector3 (90,0,0);
 
-		yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(2);
 
 		panel.SetActive (true);
 
-		int i = 5;
+		int i = 3;
 
 		while (i > -1) {
 			_secText.text = i + "";
@@ -44,6 +44,6 @@ public class PlayerDie : MonoBehaviour {
 			i--;
 		}
 
-		panel.SetActive (true);
+		Application.LoadLevel ("Test2Scene");
 	}
 }

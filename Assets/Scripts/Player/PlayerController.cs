@@ -79,7 +79,7 @@ public class PlayerController : Killable
 		_playerDie = GetComponentInChildren<PlayerDie> ();
 		_playerWin = GetComponentInChildren<PlayerWin> ();
 		_isThrusting = false;
-		//Killed ();
+		UnityEngine.XR.InputTracking.Recenter();
 	}
 	public bool stop;
 	void Update () {
@@ -108,11 +108,11 @@ public class PlayerController : Killable
 			_speed -= 1;
 		}
 
-		if (Input.GetKeyDown (KeyCode.R) || Input.GetMouseButtonDown(0)) {
+		if (OVRInput.Get (OVRInput.Axis1D.SecondaryIndexTrigger) > 0 || Input.GetMouseButtonDown(0)) {
 			_isFiring = true;
 		}
 
-		if (Input.GetKeyUp (KeyCode.R)|| Input.GetMouseButtonUp(0)) {
+		if (OVRInput.Get (OVRInput.Axis1D.SecondaryIndexTrigger) == 0|| Input.GetMouseButtonUp(0)) {
 			_isFiring = false;
 		}
 
@@ -137,9 +137,20 @@ public class PlayerController : Killable
 		float pitch = 0;
 		float yaw = 0;
 
-		roll = Input.GetAxis("Roll") * (Time.deltaTime * rollRate);
-		pitch = Input.GetAxis("Pitch") * (Time.deltaTime * pitchRate);
-		yaw = Input.GetAxis("Yaw") * (Time.deltaTime * yawRate);
+		Vector2 rightVal = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
+
+		if(OVRInput.Get (OVRInput.Axis1D.PrimaryHandTrigger) > 0)
+			roll = -OVRInput.Get (OVRInput.Axis1D.PrimaryHandTrigger) * (Time.deltaTime * rollRate);
+		if(OVRInput.Get (OVRInput.Axis1D.SecondaryHandTrigger) > 0)
+			roll = OVRInput.Get (OVRInput.Axis1D.SecondaryHandTrigger) * (Time.deltaTime * rollRate);
+
+//		print (OVRInput.Get (OVRInput.Axis1D.PrimaryIndexTrigger));
+//		print (OVRInput.Get (OVRInput.Axis1D.SecondaryIndexTrigger));
+		pitch = rightVal.y * (Time.deltaTime * pitchRate);
+		yaw =  rightVal.x * (Time.deltaTime * yawRate);
+
+		Vector2 leftVal = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
+		_speed += leftVal.y * .5f;
 
 		Quaternion targetRotation = transform.rotation * Quaternion.Euler(new Vector3(-pitch, yaw, -roll));
 		transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 100 * Time.deltaTime);
@@ -149,7 +160,7 @@ public class PlayerController : Killable
 	void Fire()
 	{
 		for (int i = 0; i < _guns.Length; i++) {
-			_guns [i].Fire (Camera.main.transform.position + Camera.main.transform.forward * 1000);
+			_guns [i].Fire (_guns [i].transform.position + _guns [i].transform.forward * 1000);
 		}
 	}
 
@@ -184,7 +195,6 @@ public class PlayerController : Killable
 
 	public override void OnHitAdditional()
 	{
-		print ("I'M HIT");
 		_cameraShake.ShakeHit ();
 		StartCoroutine (ShowHit());
 	}
@@ -201,7 +211,7 @@ public class PlayerController : Killable
 		BigshipHealth bsh = collision.GetComponent<BigshipHealth> ();
 
 		if (bsh != null) {
-			Killed ();
+			//Killed ();
 		}
 			
 	}

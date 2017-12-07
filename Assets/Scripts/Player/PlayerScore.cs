@@ -48,7 +48,7 @@ public class PlayerScore : MonoBehaviour {
 			if (_accumulatingKillScoreTimecount > _cutoffTime) {
 
 				_accumulatingKillScore = false;
-				print ("_accumulatedKillScore " + _accumulatedKillScore);
+//				print ("_accumulatedKillScore " + _accumulatedKillScore);
 				_scoreList.StopShowScore (ScoreText.ScoreType.Kill);
 			}
 

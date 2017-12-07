@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityStandardAssets.Vehicles.Aeroplane;
 
 public class EnemyAI : MonoBehaviour {
 	
@@ -9,8 +8,6 @@ public class EnemyAI : MonoBehaviour {
 	private float _thickness = 20f;
 	//Specify max distance for lockon.
 	private float _lockDistance = 250f;
-
-	private AeroplaneAiControl flightControl;
 
 	public GameObject Target;
 
