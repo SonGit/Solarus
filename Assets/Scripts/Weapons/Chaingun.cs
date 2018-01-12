@@ -10,9 +10,11 @@ public class Chaingun : MonoBehaviour {
 
 	public float _fireRate;
 
-	private bool _firing;
+	public bool _firing;
 
 	public Killable _owner;
+
+	public AudioSource _laserSound;
 
 	//Cache the bullets
 	private List<Chaingun_bullet> _cgBullets;
@@ -50,7 +52,8 @@ public class Chaingun : MonoBehaviour {
 			bullet.transform.localScale = new Vector3 (_bulletScale, _bulletScale, _bulletScale);
 			bullet._Owner = _owner;
 			bullet.Live ();
-
+			if(_laserSound != null)
+			_laserSound.Play ();
 			yield return new WaitForSeconds (_fireRate);
 
 			_firing = false;

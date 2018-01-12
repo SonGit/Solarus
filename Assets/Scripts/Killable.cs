@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public enum Faction
 {
@@ -17,7 +18,7 @@ public abstract class Killable: MonoBehaviour {
 
 	public float _hitPoints = 100;
 	public float _resistance = 0; //resistance value in %
-
+	public event Action OnHitEvent = delegate {};
 	public void OnHit(float damage, Killable attacker)
 	{
 		// If friendly fire, ignore
@@ -49,7 +50,9 @@ public abstract class Killable: MonoBehaviour {
 				PlayerScore.instance.OnHitEnemy ();
 			}
 		}
-
+		if(OnHitEvent != null)
+		OnHitEvent ();
+		
 		OnHitAdditional ();
 	}
 

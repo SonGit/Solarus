@@ -58,17 +58,22 @@ public class Plane_AI : Killable {
 		gameObject.SetActive(false);
 
 		if (_owner != null) {
-			_owner.Spawn (this);
+		//	_owner.Spawn (this);
 		}
 	}
 
-	public void Init(BattleCenter bc,Bigship owner)
+	public void Init(BattleCenter bc,Bigship owner = null)
 	{
 		_aiController.CenterOfBattle = bc;
-		_owner = owner;
+	
 		_living = true;
-		_faction = owner._faction;
 
+		if (owner != null) {
+			_owner = owner;
+			_faction = owner._faction;
+		} else {
+			_faction = Faction.ALLY;
+		}
 	}
 
 	//UI Stuffs

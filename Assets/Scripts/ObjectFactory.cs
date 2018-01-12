@@ -23,7 +23,8 @@ public class ObjectFactory: MonoBehaviour {
 		Fighter,
 		ScoreText,
 		BattleCenter,
-		OffScreenIndicator
+		OffScreenIndicator,
+		AllyFighter
 	}
 
 
@@ -35,10 +36,11 @@ public class ObjectFactory: MonoBehaviour {
 		{ PrefabType.MM_Tracker, "Prefabs/MM_Tracker" },
 		{ PrefabType.Rocket, "Prefabs/bullet_rocket" },
 		{ PrefabType.Explosion, "Prefabs/Explosion" },
-		{ PrefabType.Fighter, "Prefabs/Fighter" },
+		{ PrefabType.Fighter, "Prefabs/Enemy Fighter 1" },
 		{ PrefabType.ScoreText, "Prefabs/ScoreText" },
 		{ PrefabType.BattleCenter, "Prefabs/BattleCenter" },
 		{ PrefabType.OffScreenIndicator, "Prefabs/OffScreenIndicator" },
+		{ PrefabType.AllyFighter, "Prefabs/Ally Fighter" },
 	};
 
 	public GameObject MakeObject(PrefabType type)

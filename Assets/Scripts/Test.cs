@@ -3,90 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Test : Killable {
+public class Test : MonoBehaviour {
+	
+	protected List<Plane_AI> _planeCache;
 
-	public GameObject _go;
+	protected Transform t;
 
-	Transform _cameraTransform;
+	public BattleCenter _bc;
 
-	public Camera _camera;
+	// Use this for initialization
+	IEnumerator Start () {
+		t = transform;
 
-	public Transform arrow;
+		_planeCache = new List <Plane_AI>();
 
-	public Canvas canvas;
-
-	public override void OnKilled ()
-	{
-
-	}
-
-	void Start()
-	{
-		_cameraTransform = _camera.transform;
-		//_camera = Camera.main;
-	}
-
-	void Update()
-	{
-		GetAngle (_go);
-	}
-
-	void GetAngle(GameObject target)
-	{
-		Vector3 screenPos = _camera.WorldToScreenPoint (target.transform.position);
-		Vector3 dir = _cameraTransform.InverseTransformPoint (target.transform.position);
-		print("RectTransformUtility  " + RectTransformUtility.PixelAdjustPoint (screenPos,arrow,canvas));
-		//print ("screenPos.x  " + screenPos.x  + " screenPos.y  " +  screenPos.y+ " screenPos.z  " + screenPos.z + " Screen.width " + Screen.width + " Screen.height " + Screen.height);
-		print (" screenPos.y  " +  screenPos.y + "  Screen.height " + Screen.height);
-		if (screenPos.z>0 && screenPos.x>0 && screenPos.x<Screen.width && screenPos.y>0 && screenPos.y<Screen.height)
+		for(int i = 0 ; i < 20 ; i++)
 		{
-			//place gui texture on transform 
-			arrow.transform.localPosition = new Vector3(999,999,999);
-
-
-		} else {
-
-			Vector3 screenCenter = new Vector3 (Screen.width,Screen.height,0)/2;
-			screenPos -= screenCenter;
-
-			if (screenPos.z < 0) {
-				screenPos *= -1;
-			}
-
-			float angle = Mathf.Atan2 (screenPos.y,screenPos.x);
-			angle -= 90 * Mathf.Deg2Rad;
-
-			float cos = Mathf.Cos (angle);
-			float sin = -Mathf.Sin (angle);
-
-			screenPos = screenCenter + new Vector3 (sin*150,cos*150,0);
-
-			float m = cos / sin;
-
-			Vector3 screenBounds = screenCenter * .9f;
-
-			if (cos > 0) {
-				screenPos = new Vector3 (screenBounds.y / m, screenBounds.y, 0);
-			} else {
-				screenPos = new Vector3 (-screenBounds.y / m, -screenBounds.y, 0);
-			}
-
-			if(screenPos.x > screenBounds.x)
-			{
-				screenPos = new Vector3(screenBounds.x, screenBounds.x*m, 0);
-			}
-			else if(screenPos.x < -screenBounds.x)
-			{
-				screenPos = new Vector3(-screenBounds.x, -screenBounds.x*m, 0);
-			}
-
-			arrow.transform.localPosition = screenPos;
-			arrow.transform.localRotation = Quaternion.Euler (0,0,angle*Mathf.Rad2Deg);
-
+			_planeCache.Add( Create() );
+			yield return new WaitForSeconds (.51f);
 		}
-		
-
 	}
+	public Plane_AI Create()
+	{
+		GameObject go = ObjectFactory.instance.MakeObject (ObjectFactory.PrefabType.Fighter);
+		go.transform.position = new Vector3 (transform.position.x + Random.Range(900,1600),transform.position.y + Random.Range(900,1600),transform.position.z + Random.Range(900,1600));
+		Plane_AI AI = go.GetComponent<Plane_AI> ();
+		AI.Init (_bc);
 
+		return AI;
+	}
 
 }

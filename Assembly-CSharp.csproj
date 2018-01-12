@@ -92,6 +92,11 @@
      <Compile Include="Assets\AirStrike\Scripts\WeaponSystem\WeaponLauncher.cs" />
      <Compile Include="Assets\AirStrike\Standard Assets\RealExplosive\Sources\Scripts\FX_ParticlePreview.cs" />
      <Compile Include="Assets\AirStrike\Standard Assets\RealExplosive\Sources\Scripts\FX_Setting.cs" />
+     <Compile Include="Assets\DogFightDemo\Standard Assets\_scripts\CameraFollow.cs" />
+     <Compile Include="Assets\DogFightDemo\Standard Assets\_scripts\EnemyManager.cs" />
+     <Compile Include="Assets\DogFightDemo\Standard Assets\_scripts\FighterAI.cs" />
+     <Compile Include="Assets\DogFightDemo\Standard Assets\_scripts\GameController.cs" />
+     <Compile Include="Assets\DogFightDemo\Standard Assets\_scripts\Player.cs" />
      <Compile Include="Assets\FullTiltBoogie\RotateFlareHolder.cs" />
      <Compile Include="Assets\GoogleVR\Demos\Scripts\DemoInputManager.cs" />
      <Compile Include="Assets\GoogleVR\Demos\Scripts\DemoSceneManager.cs" />
@@ -288,9 +293,12 @@
      <Compile Include="Assets\OVRInspector\Scripts\UIUtils\OVRGazeEventTrigger.cs" />
      <Compile Include="Assets\OVRInspector\Scripts\UIUtils\OVRGazeScroller.cs" />
      <Compile Include="Assets\OVRInspector\Scripts\UIUtils\OVRProgressIndicator.cs" />
+     <Compile Include="Assets\Sci Fi Assets\Simple SciFi Gun Turret Set\Scripts\CameraMouseDrag.cs" />
      <Compile Include="Assets\Scripts\AI\Bigship\Bigship.cs" />
      <Compile Include="Assets\Scripts\AI\Bigship\BigshipHealth.cs" />
+     <Compile Include="Assets\Scripts\AI\Bigship\CorvetteBattleship.cs" />
      <Compile Include="Assets\Scripts\AI\EnemyAI.cs" />
+     <Compile Include="Assets\Scripts\AI\Spaceship.cs" />
      <Compile Include="Assets\Scripts\AI\Turret.cs" />
      <Compile Include="Assets\Scripts\AI\TurretLOS.cs" />
      <Compile Include="Assets\Scripts\Cacheable.cs" />
@@ -309,10 +317,13 @@
      <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerDebug.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerScore.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerUI.cs" />
      <Compile Include="Assets\Scripts\SFX\HitSparks.cs" />
      <Compile Include="Assets\Scripts\ShipController.cs" />
      <Compile Include="Assets\Scripts\Test.cs" />
-     <Compile Include="Assets\Scripts\UI\IntroText.cs" />
+     <Compile Include="Assets\Scripts\UI\HealthBar.cs" />
+     <Compile Include="Assets\Scripts\UI\IntroFirstStage.cs" />
+     <Compile Include="Assets\Scripts\UI\IntroSecondStage.cs" />
      <Compile Include="Assets\Scripts\UI\OffScreenIndicator.cs" />
      <Compile Include="Assets\Scripts\UI\OffScreenIndicatorManager.cs" />
      <Compile Include="Assets\Scripts\UI\OffScreenTracking.cs" />
@@ -362,6 +373,7 @@
      <None Include="Assets\OVR\Resources\OVRMRChromaKey.cginc" />
      <None Include="Assets\SpaceUnity\Read First.txt" />
      <None Include="Assets\OVRInspector\Shaders\Particle Alpha Blend-AfterTrans-TransAlphaCutoff.shader" />
+     <None Include="Assets\Sci Fi Assets\Simple SciFi Gun Turret Set\Read Me.txt" />
      <None Include="Assets\Parse\Parse.Unity.xml" />
      <None Include="Assets\OVRInspector\Shaders\Particle-Alpha-Premultiply-AfterTrans.shader" />
      <None Include="Assets\OVRInspector\Shaders\UI-OptionalZTest.shader" />
@@ -376,6 +388,7 @@
      <None Include="Assets\VolumetricLines\Shaders\AlphaBlended.shader" />
      <None Include="Assets\OVRInspector\Shaders\UI-OptionalZTestFont.shader" />
      <None Include="Assets\FullTiltBoogie\Helpers\readme.txt" />
+     <None Include="Assets\DogFightDemo\Standard Assets\Skyboxes\ skybox info.txt" />
      <None Include="Assets\GoogleVR\Shaders\GvrAdditiveOverlay.shader" />
      <None Include="Assets\OVR\Resources\Cubemap Blit.shader" />
      <None Include="Assets\OvrAvatar\Content\Materials\AvatarSurfaceShaderSelfOccluding.shader" />

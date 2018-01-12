@@ -1,22 +1,17 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UI\OffScreenIndicator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\DogFightDemo\Standard Assets\_scripts\EnemyManager.cs">
     <Files>
-      <File FileName="Assets\Scripts\Test.cs" Line="33" Column="1" />
-      <File FileName="Assets\AirStrike\Scripts\Plane_AI.cs" Line="38" Column="1" />
-      <File FileName="Assets\Scripts\UI\OffScreenIndicator.cs" Line="53" Column="37" />
-      <File FileName="Assets\Scripts\UI\OffScreenIndicatorManager.cs" Line="9" Column="44" />
-      <File FileName="Assets\Scripts\AI\TurretLOS.cs" Line="7" Column="2" />
-      <File FileName="Assets\Scripts\UI\OffScreenTracking.cs" Line="14" Column="1" />
-      <File FileName="Assets\Scripts\AI\Bigship\Bigship.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AI\Bigship\BigshipHealth.cs" Line="1" Column="1" />
+      <File FileName="Assets\DogFightDemo\Standard Assets\_scripts\EnemyManager.cs" Line="53" Column="1" />
+      <File FileName="Assets\DogFightDemo\Standard Assets\_scripts\Player.cs" Line="1" Column="1" />
+      <File FileName="Assets\DogFightDemo\Standard Assets\_scripts\FighterAI.cs" Line="1" Column="1" />
+      <File FileName="Assets\DogFightDemo\Standard Assets\_scripts\CameraFollow.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="D:\Unity Projects\Solarus\Assets\Scripts\SFX\HitSparks.cs" line="38" column="21" />
       <Breakpoint file="D:\Unity Projects\Solarus\Assets\Scripts\ObjectPool.cs" line="77" column="1" />
-      <Breakpoint file="D:\Solarus\Assets\Scripts\UI\IntroText.cs" line="75" column="1" />
       <Breakpoint file="D:\Solarus\Assets\Scripts\Player\CameraShake.cs" line="73" column="1" />
       <Breakpoint file="D:\Solarus\Assets\Scripts\Player\CameraShake.cs" line="71" column="1" />
       <Breakpoint file="D:\Solarus\Assets\Scripts\Player\CameraShake.cs" line="52" column="1" />
@@ -30,6 +25,7 @@
       <Breakpoint file="D:\Solarus\Assets\HyperLuminal\LocatorSystem\Scripts\LocationManager.cs" line="169" column="1" />
       <Breakpoint file="D:\Solarus\Assets\HyperLuminal\LocatorSystem\Scripts\LocationTrackingSystem.cs" line="96" column="1" />
       <Breakpoint file="D:\Solarus\Assets\HyperLuminal\LocatorSystem\Scripts\LocationManager.cs" line="36" column="4" />
+      <Breakpoint file="D:\Solarus\Assets\Scripts\Player\CameraShake.cs" line="36" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

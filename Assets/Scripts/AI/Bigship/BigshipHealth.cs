@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BigshipHealth : Killable {
 
@@ -38,7 +39,7 @@ public class BigshipHealth : Killable {
 
 		if (_faction == Faction.ENEMY) {
 			print ("WIN");
-			PlayerController.instance.Win ();
+		//	PlayerController.instance.Win ();
 		}
 
 		if (_faction == Faction.ALLY) {

@@ -14,6 +14,8 @@ public class PlayerDebug : MonoBehaviour {
 	public BigshipHealth _enemyShipHP;
 
 	Vector3 _initPos;
+
+	public Transform _arrow;
 	// Use this for initialization
 	void Start () {
 		_initPos = transform.position;
@@ -25,7 +27,7 @@ public class PlayerDebug : MonoBehaviour {
 
 		_allyShipHPText.text = _allyShipHP._hitPoints + "";
 		_enemyShipHPText.text = _enemyShipHP._hitPoints+ "";
-
+//		_arrow.LookAt (_enemyShipHP.transform);
 	}
 
 	public void ReturnToInit()

@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using System;
 
 
 public class PlayerController : Killable
@@ -16,7 +17,18 @@ public class PlayerController : Killable
 	// Specify the pitch rate (multiplier for pitch when steering up/down)
 	public float pitchRate = 100.0f;
 	// Specify the speed (multiplier for pitch when steering up/down)
-	public float _speed;
+	private float speed;
+
+	public float _speed
+	{
+		get {
+			return speed;
+		}
+		set {
+			speed = value;
+			OnSpeedChanged ();
+		}
+	}
 	// Private variables
 	private Rigidbody _cacheRigidbody;
 	// Cache Transform for performance reasons
@@ -41,7 +53,6 @@ public class PlayerController : Killable
 
 			if (_cameraShake != null) 
 			{
-				if(_introing)
 				if (isThrusting) {
 					_cameraShake.RumblingHigh ();
 				} else {
@@ -53,15 +64,18 @@ public class PlayerController : Killable
 
 	private bool _isFiring;
 	private bool _isDecelerating;
-	public bool _introing;
 
 	public static PlayerController instance;
 
-	public Text _HPText;
-	public Text _hitText;
+	public event Action OnHit = delegate {};
+	public event Action OnHPChanged = delegate {};
+	public event Action OnSpeedChanged = delegate {};
 
-	private PlayerDie _playerDie;
+	[SerializeField]
 	private PlayerWin _playerWin;
+
+	Transform mainCamT;
+
 	void Awake()
 	{
 		instance = this;
@@ -76,9 +90,11 @@ public class PlayerController : Killable
 		t = transform;
 		_cameraShake = GetComponentInChildren<CameraShake> ();
 		_guns = GetComponentsInChildren<Chaingun> ();
-		_playerDie = GetComponentInChildren<PlayerDie> ();
-		_playerWin = GetComponentInChildren<PlayerWin> ();
+
 		_isThrusting = false;
+
+		mainCamT = Camera.main.transform;
+
 		UnityEngine.XR.InputTracking.Recenter();
 	}
 	public bool stop;
@@ -108,6 +124,14 @@ public class PlayerController : Killable
 			_speed -= 1;
 		}
 
+		if ( Input.GetKeyDown(KeyCode.R)) {
+			Fire ();
+		}
+
+		if ( Input.GetKeyUp(KeyCode.R)) {
+			_isFiring = false;
+		}
+
 		if (OVRInput.Get (OVRInput.Axis1D.SecondaryIndexTrigger) > 0 || Input.GetMouseButtonDown(0)) {
 			_isFiring = true;
 		}
@@ -119,8 +143,8 @@ public class PlayerController : Killable
 		if (_isFiring)
 			Fire ();
 
-		if (_speed < 25)
-			_speed = 25;
+		if (_speed < 2)
+			_speed = 2;
 
 		if (_speed > 200)
 			_speed = 200;
@@ -154,13 +178,13 @@ public class PlayerController : Killable
 
 		Quaternion targetRotation = transform.rotation * Quaternion.Euler(new Vector3(-pitch, yaw, -roll));
 		transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 100 * Time.deltaTime);
-		_HPText.text = _hitPoints + "";
+
 	}
 
 	void Fire()
 	{
 		for (int i = 0; i < _guns.Length; i++) {
-			_guns [i].Fire (_guns [i].transform.position + _guns [i].transform.forward * 1000);
+			_guns [i].Fire (t.position + t.forward * 1000);
 		}
 	}
 
@@ -196,14 +220,8 @@ public class PlayerController : Killable
 	public override void OnHitAdditional()
 	{
 		_cameraShake.ShakeHit ();
-		StartCoroutine (ShowHit());
-	}
 
-	IEnumerator ShowHit()
-	{
-		_hitText.enabled = true;
-		yield return new WaitForSeconds (1);
-		_hitText.enabled = false;
+		OnHPChanged ();
 	}
 
 	private void OnTriggerEnter(Collider collision)
@@ -213,13 +231,10 @@ public class PlayerController : Killable
 		if (bsh != null) {
 			//Killed ();
 		}
-			
 	}
 
 	public override void OnKilled ()
 	{
-		print ("KILLED");
-		_playerDie.ShowDie ();
 		stop = true;
 
 		ExplosionObject explosion = ObjectPool.instance.GetExplosionObject ();
@@ -231,7 +246,7 @@ public class PlayerController : Killable
 
 	public void Win()
 	{
-		_playerWin.ShowWin ();
+		_playerWin.Play ();
 	}
 
 }

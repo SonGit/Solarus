@@ -20,10 +20,22 @@ public class Turret : Killable {
 
 	private float _timeCount = 0;
 
+	[SerializeField]
+	private Transform[] _gunMuzzles;
+
 	// Use this for initialization
 	void Awake () {
 		_guns = this.GetComponentsInChildren<Chaingun> ();
 		_turretLos = this.GetComponentInChildren<TurretLOS> ();
+	}
+
+	void Start()
+	{
+		_turretBase.LookAt (transform.forward * 100);
+		_turretBase.localEulerAngles = new Vector3 (0,_turretBase.transform.localEulerAngles.y,0);
+		foreach (Transform muzzle in _gunMuzzles) {
+			muzzle.LookAt (transform.forward * 100);
+		}
 	}
 
 	// For caching
@@ -49,14 +61,22 @@ public class Turret : Killable {
 
 		
 		targetDir = _target.transform.position - _turretBase.position;
+		targetDir = new Vector3 (0,targetDir.y,0);
 		step = _turretRotSpeed * Time.deltaTime;
 		newDir = Vector3.RotateTowards(_turretBase.forward, targetDir, step, 0.0F);
 
-		_turretBase.rotation = Quaternion.LookRotation(newDir);
-
+		_turretBase.LookAt (_target.transform.position);
+		_turretBase.localEulerAngles = new Vector3 (0,_turretBase.transform.localEulerAngles.y,0);
 		if(_target!= null)
 		foreach (Chaingun gun in _guns) {
 			gun.Fire (gun.transform.position + gun.transform.forward);
+		}
+
+		foreach (Transform muzzle in _gunMuzzles) {
+			muzzle.LookAt (_target.transform.position);
+		//	muzzle.localEulerAngles = new Vector3 (0,0,muzzle.localEulerAngles.z);
+
+			//Debug.DrawLine (muzzle.position,muzzle.forward * 1000,Color.blue);
 		}
 
 

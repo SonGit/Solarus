@@ -10,6 +10,9 @@ public class Typewriter : MonoBehaviour {
 	public RectTransform blip;
 	public float speed;
 	public float offset;
+
+	public AudioSource clickSound;
+
 	void Awake () 
 	{
 		txt = GetComponent<Text> ();
@@ -54,6 +57,8 @@ public class Typewriter : MonoBehaviour {
 				float x = blip.anchoredPosition.x + offset;
 				blip.anchoredPosition = new Vector2 (x,blip.anchoredPosition.y);
 			}
+
+			clickSound.Play ();
 			
 			yield return new WaitForSeconds (speed);
 		}

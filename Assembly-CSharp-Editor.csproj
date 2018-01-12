@@ -94,6 +94,7 @@
      <None Include="Assets\OVR\Resources\OVRMRChromaKey.cginc" />
      <None Include="Assets\SpaceUnity\Read First.txt" />
      <None Include="Assets\OVRInspector\Shaders\Particle Alpha Blend-AfterTrans-TransAlphaCutoff.shader" />
+     <None Include="Assets\Sci Fi Assets\Simple SciFi Gun Turret Set\Read Me.txt" />
      <None Include="Assets\Parse\Parse.Unity.xml" />
      <None Include="Assets\OVRInspector\Shaders\Particle-Alpha-Premultiply-AfterTrans.shader" />
      <None Include="Assets\OVRInspector\Shaders\UI-OptionalZTest.shader" />
@@ -108,6 +109,7 @@
      <None Include="Assets\VolumetricLines\Shaders\AlphaBlended.shader" />
      <None Include="Assets\OVRInspector\Shaders\UI-OptionalZTestFont.shader" />
      <None Include="Assets\FullTiltBoogie\Helpers\readme.txt" />
+     <None Include="Assets\DogFightDemo\Standard Assets\Skyboxes\ skybox info.txt" />
      <None Include="Assets\GoogleVR\Shaders\GvrAdditiveOverlay.shader" />
      <None Include="Assets\OVR\Resources\Cubemap Blit.shader" />
      <None Include="Assets\OvrAvatar\Content\Materials\AvatarSurfaceShaderSelfOccluding.shader" />
@@ -152,6 +154,9 @@
      <None Include="Assets\OVR\Resources\Underlay Impostor.shader" />
      <None Include="Assets\OVRHarness\Resources\intro.txt" />
      <None Include="Assets\OVR\Plugins\placeholder.txt" />
+ <Reference Include="Assembly-UnityScript">
+ <HintPath>D:/Solarus/Library/ScriptAssemblies/Assembly-UnityScript.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

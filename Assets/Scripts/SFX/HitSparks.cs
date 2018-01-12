@@ -8,9 +8,12 @@ public class HitSparks : Cacheable {
 
 	private float _timeCount = 0;
 
+	private AudioSource _hitAudio;
+
 	void Awake()
 	{
 		_particle = this.GetComponentInChildren<ParticleSystem> ();
+		_hitAudio = this.GetComponent<AudioSource> ();
 	}
 
 	void Update()
@@ -37,6 +40,7 @@ public class HitSparks : Cacheable {
 		_timeCount = 0;
 		_particle.gameObject.SetActive (true);
 		_particle.Play ();
+		_hitAudio.Play ();
 	}
 
 

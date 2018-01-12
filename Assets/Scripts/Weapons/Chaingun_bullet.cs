@@ -41,13 +41,10 @@ public class Chaingun_bullet : Cacheable {
 
 	void OnTriggerEnter(Collider collider)
 	{
-//		print (_timeCount);
 		if (_timeCount < .04f)
 			return;
 		
 		Killable killable = collider.GetComponent<Killable> ();
-
-
 
 		if (killable != null) {
 			// If friendly fire, ignore
@@ -62,7 +59,6 @@ public class Chaingun_bullet : Cacheable {
 				//Rotate spark
 				hs.transform.LookAt(_initPos);
 			}
-
 
 			//Cause damage
 			killable.OnHit (_damage,_Owner);

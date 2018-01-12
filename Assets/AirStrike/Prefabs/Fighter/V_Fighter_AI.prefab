@@ -394,7 +394,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -406,7 +406,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -418,7 +418,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
 --- !u!114 &11420928
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -580,11 +580,9 @@ MonoBehaviour:
   BattlePosition: {x: 0, y: 0, z: 0}
   CenterOfBattle: {fileID: 0}
   FlyDistance: 500
-  Disable: 0
   AIstate: 1
   WeaponSelected: 0
   AttackRate: 80
-  chains: []
 --- !u!122 &12248066
 Halo:
   m_ObjectHideFlags: 1

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bigship : MonoBehaviour {
-
-	public Faction _faction;
+public class Bigship : Killable {
 
 	public Bigship _targetShip;
 
@@ -14,15 +12,15 @@ public class Bigship : MonoBehaviour {
 
 	public float _currDistanceFromTarget;
 
-	List<Plane_AI> _planeCache;
+	protected List<FighterAI> _planeCache;
 
 	public bool stop;
 
 	public Transform _shipBase;
 
-	Transform t;
+	protected Transform t;
 
-	BattleCenter _bc;
+	protected BattleCenter _bc;
 
 
 	// Use this for initialization
@@ -30,52 +28,60 @@ public class Bigship : MonoBehaviour {
 		t = transform;
 		_bc = this.GetComponentInChildren<BattleCenter> ();
 
-		_planeCache = new List <Plane_AI>();
+		_planeCache = new List <FighterAI>();
 
-		for(int i = 0 ; i < 4 ; i++)
+		for(int i = 0 ; i < 20 ; i++)
 		{
 			_planeCache.Add( Create() );
-			yield return new WaitForSeconds (1);
+
 		}
 
+		yield return new WaitForSeconds (.1f);
+	}
+
+
+	// Update is called once per frame
+	void Update () {
+
+		Loop ();
 	}
 
 	// For caching
 	Vector3 targetDir;
 	float step;
 	Vector3 newDir;
-	// Update is called once per frame
-	void Update () {
 
+	protected void Loop()
+	{
 		if (stop || _targetShip == null)
 			return;
 
 		_currDistanceFromTarget = Vector3.Distance (t.position, _targetShip.t.position);
 
 		targetDir = _targetShip.t.position - t.position;
-		step = 5 * Time.deltaTime;
+		step = .25f * Time.deltaTime;
 		newDir = Vector3.RotateTowards(t.forward, targetDir, step, 0.0F);
 
 		t.rotation = Quaternion.LookRotation(newDir);
 		if (_currDistanceFromTarget > _minDistanceFromTarget) {
-			
+
 
 			t.position = Vector3.Lerp (t.position, _targetShip.t.position, Time.deltaTime * _speed);
 
-		
+
 
 			if (_currDistanceFromTarget < _minDistanceFromTarget + 1000 ) {
-				_shipBase.localRotation = Quaternion.RotateTowards (_shipBase.localRotation, Quaternion.Euler (new Vector3 (-90, 90, 0)), 2 * Time.deltaTime);
+				_shipBase.localRotation = Quaternion.RotateTowards (_shipBase.localRotation, Quaternion.Euler (new Vector3 (0, 90, 0)), 2 * Time.deltaTime);
 			} else {
-				_shipBase.localRotation = Quaternion.RotateTowards(_shipBase.localRotation, Quaternion.Euler(new Vector3(-90,0,0)), 2 * Time.deltaTime);
+				_shipBase.localRotation = Quaternion.RotateTowards(_shipBase.localRotation, Quaternion.Euler(new Vector3(0,0,0)), 2 * Time.deltaTime);
 			}
-				
+
 
 		} else {
-			
+
 			//t.rotation = Quaternion.RotateTowards(t.rotation, Quaternion.Euler(new Vector3(0,90,0)), 50 * Time.deltaTime);
 
-			_shipBase.localRotation = Quaternion.RotateTowards(_shipBase.localRotation, Quaternion.Euler(new Vector3(-90,90,0)), 2 * Time.deltaTime);
+			_shipBase.localRotation = Quaternion.RotateTowards(_shipBase.localRotation, Quaternion.Euler(new Vector3(0,90,0)), 2 * Time.deltaTime);
 		}
 
 		UpdateBattleCenterPos ();
@@ -86,33 +92,54 @@ public class Bigship : MonoBehaviour {
 		float x = t.position.x + (_targetShip.t.position.x - t.position.x) /2;
 		float y = t.position.y + (_targetShip.t.position.y - t.position.y) /2 + 300;
 		float z = t.position.z + (_targetShip.t.position.z - t.position.z) /2;
-		_bc.transform.position = new Vector3 (x, y, z);
+		_bc.transform.position = _targetShip.transform.position;
 	}
 
 
-	public Plane_AI Create()
+	public FighterAI Create()
 	{
-		GameObject go = ObjectFactory.instance.MakeObject (ObjectFactory.PrefabType.Fighter);
-		go.transform.position = new Vector3 (transform.position.x + Random.Range(100,600),transform.position.y + Random.Range(100,400),transform.position.z + Random.Range(100,400));
-		Plane_AI AI = go.GetComponent<Plane_AI> ();
-		AI.Init (_bc,this);
+		GameObject go;
+		if (_faction == Faction.ALLY) {
+			go = ObjectFactory.instance.MakeObject (ObjectFactory.PrefabType.AllyFighter);
+		} else {
+			go = ObjectFactory.instance.MakeObject (ObjectFactory.PrefabType.Fighter);
+		}
+
+		go.transform.position = new Vector3 (transform.position.x + Random.Range(-900,900),transform.position.y + Random.Range(-900,900),transform.position.z + Random.Range(-900,900));
+		FighterAI AI = go.GetComponent<FighterAI> ();
+		AI.Initialize (_bc,this);
 
 		return AI;
 	}
 
 	public float _penalty = 0;
-	public void Spawn(Plane_AI AI)
+
+	public void Spawn(FighterAI AI)
 	{
 		StartCoroutine (Spawn_async(AI));
 	}
 
-	IEnumerator Spawn_async(Plane_AI AI)
+	IEnumerator Spawn_async(FighterAI AI)
 	{
-		_penalty += 0.1f;
+		_penalty += 0.2f;
 		yield return new WaitForSeconds (_penalty);
 		AI.transform.position = new Vector3 (transform.position.x + Random.Range(100,400),transform.position.y + Random.Range(100,400),transform.position.z + Random.Range(100,400));
-		AI.Init (_bc,this);
 		AI.gameObject.SetActive (true);
+		AI.Initialize (_bc,this);
+
+		_hitPoints -= 10;
+	}
+
+	public override void OnKilled ()
+	{
+
+		if (_faction == Faction.ENEMY) {
+			print ("WIN");
+		}
+
+		if (_faction == Faction.ALLY) {
+			print ("LOSE");
+		}
 	}
 
 		

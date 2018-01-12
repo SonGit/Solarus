@@ -26,7 +26,7 @@ public enum TargetBehavior
 
 public class AIController : MonoBehaviour
 {
-	
+
 	public string[] TargetTag;// list of Tags that AI will attack to
 	public GameObject Target;// current target object.
 	public float TimeToLock;// dularion to select the target
@@ -37,13 +37,13 @@ public class AIController : MonoBehaviour
 	public BattleCenter CenterOfBattle; //  middle of battle area object (optional)
 	public float FlyDistance = 1000;// limited distance between (BattlePosition and AI position) , this is will create a circle battle area and AI cannot go far out of this area.
 	public bool Disable;
-	
+
 	public AIState AIstate = AIState.Patrol;// AI state
-	
+
 	[HideInInspector]
 	public int WeaponSelected = 0;
 	public int AttackRate = 80; // (0 - 100) e.g. if 100 this AI will always shooting.
-	
+
 	private float timestatetemp;
 	private float timetolockcount;
 	private FlightSystem flight;// Core plane system
@@ -54,7 +54,7 @@ public class AIController : MonoBehaviour
 
 	public Chaingun[] chains;
 	private Plane_AI plane_ai;
-	
+
 	void Start ()
 	{
 		timetolockcount = Time.time;
@@ -64,12 +64,12 @@ public class AIController : MonoBehaviour
 		if(!CenterOfBattle){
 			BattleCenter btcenter = (BattleCenter)GameObject.FindObjectOfType(typeof(BattleCenter));
 			if(btcenter!=null)
-			CenterOfBattle = btcenter.gameObject.GetComponent<BattleCenter>();
+				CenterOfBattle = btcenter.gameObject.GetComponent<BattleCenter>();
 		}
 		chains = this.GetComponentsInChildren<Chaingun> ();
 		plane_ai = this.GetComponent<Plane_AI> ();
 	}
-	
+
 	void TargetBehaviorCal ()
 	{
 		// check the target is exist 
@@ -79,7 +79,7 @@ public class AIController : MonoBehaviour
 			// check height from the target.
 			float deltaheight = Mathf.Abs (targetpositionTemp.y - Target.transform.position.y); 
 			targetpositionTemp = Target.transform.position;
-			
+
 			if (delta == Vector3.zero) {
 				// Static target
 				targetHavior = TargetBehavior.Static;	
@@ -98,93 +98,93 @@ public class AIController : MonoBehaviour
 			}
 		}
 	}
-	
+
 	private float dot;
 	List<Killable> objs;
-	
+
 	void Update ()
 	{
 		if (Disable) {
 			flight.enabled = false;
 			return;
 		}
-	
-		
+
+
 		if (!flight)
 			return;
-		
+
 
 		if (CenterOfBattle) 
 			// CenterOfBattle is exist , BattlePosition = CenterOfBattle position 
 			//in case of able you to changing the battle area
 			BattlePosition = CenterOfBattle.gameObject.transform.position;
-		
+
 		// calculate target behavior.
 		TargetBehaviorCal ();
-		
+
 		// AI state machine
 		switch (AIstate) {
 		case AIState.Patrol:// AI will free flying and looking for a target.
 
-				// Find only gameobject by Tag within TargetTag[]
+			// Find only gameobject by Tag within TargetTag[]
 
-					// get all objects as same tag as TargetTag[i]
-					objs = new List<Killable>();
+			// get all objects as same tag as TargetTag[i]
+			objs = new List<Killable>();
 
-					GameObject[] gos = GameObject.FindGameObjectsWithTag ("Fighter");
+			GameObject[] gos = GameObject.FindGameObjectsWithTag ("Fighter");
 
-					foreach(GameObject go in gos)
-					{
-						Killable killable = go.GetComponent<Killable> ();
-						if (killable != null) {
-							if (FactionRelationshipManager.IsHostile (killable._faction, plane_ai._faction)) {
-								objs.Add (killable);
-							}
-						}
+			foreach(GameObject go in gos)
+			{
+				Killable killable = go.GetComponent<Killable> ();
+				if (killable != null) {
+					if (FactionRelationshipManager.IsHostile (killable._faction, plane_ai._faction)) {
+						objs.Add (killable);
 					}
+				}
+			}
 
 
-					float distance = int.MaxValue;
-					for (int i = 0; i < objs.Count; i++) {
-						if (objs [i]) {
-							// make it delay by TimeToLock
-							if (timetolockcount + TimeToLock < Time.time) {
-                           	
-								float dis = Vector3.Distance (objs [i].transform.position, transform.position);
-								// selected closer target
-								if (DistanceLock > dis) {
-									if (!Target) {
-										// i random a bit because i want this AI look hesitate. so you can remove "Random.Range (0, 100) > 80" if you want this AI select every target.
-										if (distance > dis && Random.Range (0, 100) > 80) {
-											distance = dis;
-											Target = objs [i].gameObject;
-											flight.FollowTarget = true;
-											// go to Attacking state
-											AIstate = AIState.Attacking;
-											// save current time
-											timestatetemp = Time.time;
-											// random weapon from the flight.WeaponControl.WeaponLists
-											WeaponSelected = Random.Range (0, flight.WeaponControl.WeaponLists.Length);	
-										}
-									}
+			float distance = int.MaxValue;
+			for (int i = 0; i < objs.Count; i++) {
+				if (objs [i]) {
+					// make it delay by TimeToLock
+					if (timetolockcount + TimeToLock < Time.time) {
+
+						float dis = Vector3.Distance (objs [i].transform.position, transform.position);
+						// selected closer target
+						if (DistanceLock > dis) {
+							if (!Target) {
+								// i random a bit because i want this AI look hesitate. so you can remove "Random.Range (0, 100) > 80" if you want this AI select every target.
+								if (distance > dis && Random.Range (0, 100) > 80) {
+									distance = dis;
+									Target = objs [i].gameObject;
+									flight.FollowTarget = true;
+									// go to Attacking state
+									AIstate = AIState.Attacking;
+									// save current time
+									timestatetemp = Time.time;
+									// random weapon from the flight.WeaponControl.WeaponLists
+									WeaponSelected = Random.Range (0, flight.WeaponControl.WeaponLists.Length);	
 								}
 							}
-							// shooting..
-//							
-							shootTarget (objs [i].transform.position);
 						}
 					}
-				
-			
+					// shooting..
+					//							
+					shootTarget (objs [i].transform.position);
+				}
+			}
+
+
 			break;
 		case AIState.Idle:// Free state
 			// free fly and checking the AI is in of Battle Area 
-		//	if (Vector3.Distance (flight.PositionTarget, this.transform.position) <= FlyDistance) {
-				// go back to Patrol state
-				AIstate = AIState.Patrol;
-				timestatetemp = Time.time;
+			//	if (Vector3.Distance (flight.PositionTarget, this.transform.position) <= FlyDistance) {
+			// go back to Patrol state
+			AIstate = AIState.Patrol;
+			timestatetemp = Time.time;
 			//}
-			
+
 			break;
 		case AIState.Attacking:// Attacking state
 			if (Target) {
@@ -192,9 +192,9 @@ public class AIController : MonoBehaviour
 				flight.PositionTarget = Target.transform.position;
 				// shoot the target..
 				if (!shootTarget (flight.PositionTarget)) {
-			
+
 					if (attacking) {
-		
+
 						// if in attacking but cannot shoot anymore turn back in 5 sec
 						if (Time.time > timestatetemp + 5) {
 							turnPosition ();
@@ -206,7 +206,7 @@ public class AIController : MonoBehaviour
 						}		
 					}
 				}
-				
+
 			} else {
 				// if target is Destroyed go back to Patrol state
 				AIstate = AIState.Patrol;
@@ -228,7 +228,7 @@ public class AIController : MonoBehaviour
 			if (Vector3.Distance (BattlePosition, this.transform.position) > FlyDistance) {
 				gotoCenter ();
 			}
-			
+
 			// current target height Y
 			float height = flight.PositionTarget.y;
 			if (targetHavior == TargetBehavior.Static) {// if static target
@@ -247,7 +247,7 @@ public class AIController : MonoBehaviour
 			break;
 		}
 	}
-	
+
 	bool shootTarget (Vector3 targetPos)
 	{
 		// Shooting ...
@@ -256,13 +256,13 @@ public class AIController : MonoBehaviour
 		dot = Vector3.Dot (dir, transform.forward);
 		// checking distance between Target and AI
 		float distance = Vector3.Distance (targetPos, this.transform.position);	
-		
+
 		if (distance <= DistanceAttack) {// is in Range ?
 			// Ok in range
-			
+
 			if (dot >= AttackDirection) {// is in Direction ?
 				// Ok Can Shoot them.
-				
+
 				attacking = true;
 				if (Random.Range (0, 100) <= AttackRate) {// Make it delay and unstable shooting by Attack rate (if you set Attack Rate to 100 this AI will alway shooting like a brutal)
 					foreach (Chaingun gun in chains)
@@ -275,7 +275,7 @@ public class AIController : MonoBehaviour
 				}
 
 			} else {
-				
+
 				// cannot shoot.
 				// random weapon in flight.WeaponControl.WeaponLists
 				WeaponSelected = Random.Range (0, flight.WeaponControl.WeaponLists.Length);	

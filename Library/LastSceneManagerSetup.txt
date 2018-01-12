@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Test2Scene.unity
+- path: Assets/DogFightDemo/DogFightingDemo.unity
   isLoaded: 1
   isActive: 1

@@ -27,7 +27,7 @@ public class FlightSystem : MonoBehaviour
 	public bool SimpleControl = false;// set true is enabled casual controling
 	[HideInInspector]
 	public bool FollowTarget = false;
-	[HideInInspector]
+
 	public Vector3 PositionTarget = Vector3.zero;// current target position
 	[HideInInspector]
 	public DamageManager DamageManage;

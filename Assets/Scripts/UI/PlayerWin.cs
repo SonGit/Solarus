@@ -5,30 +5,76 @@ using UnityEngine.UI;
 
 public class PlayerWin : MonoBehaviour {
 
-	public Text _missionWinText;
+	public AudioSource _deathCry;
+	public AudioSource _flash;
+	public AudioSource _remember;
 
+	[SerializeField]
+	private float speed = 5.0f;
+	[SerializeField]
+	private float minimum = 0.0f;
+	[SerializeField]
+	private float maximum = 1f;
+	[SerializeField]
+	private SpriteRenderer blackBG;
 
-	// Use this for initialization
-	void Start () {
-		_missionWinText.enabled = false;
+	void Start()
+	{
+	//	Play ();
 	}
 
-	public void ShowWin()
+	public void Play()
 	{
-		_missionWinText.enabled = true;
-		StartCoroutine (Flashing());
+		StartCoroutine (Play_async());
 	}
-	
-	IEnumerator Flashing()
+
+	IEnumerator Play_async()
 	{
-		Color _prevColor = _missionWinText.color;
-		float time = .5f;
-		while(true)
-		{
-			_missionWinText.CrossFadeColor (new Color(0,0,0,0),time,false,true);
-			yield return new WaitForSeconds (time);
-			_missionWinText.CrossFadeColor (_prevColor,time,false,true);
-			yield return new WaitForSeconds (time);
+		_deathCry.Play ();
+		yield return new WaitForSeconds (2);
+		_remember.Play ();
+		yield return new WaitForSeconds (1);
+
+		for (int i = 0; i < 4; i++) {
+			_flash.Stop ();
+			_flash.Play ();
+			yield return FadeIn (blackBG);
+			yield return FadeOut (blackBG);
+		}
+		yield return FadeOut (blackBG);
+		yield return FadeIn (blackBG);
+		Application.LoadLevel ("Test2Scene");
+		//intro.Play ();
+	}
+		
+
+	IEnumerator FadeIn(SpriteRenderer sprite)
+	{
+		sprite.color = new Color(1f, 1f, 1f, 0);
+		while (true) {
+			float step = speed * Time.deltaTime;
+			sprite.color = new Color(1f, 1f, 1f, Mathf.Lerp(sprite.color.a, maximum, step));
+
+			if (sprite.color.a > 0.99f) {
+				yield break;
+			}
+
+			yield return new WaitForEndOfFrame ();
+		}
+	}
+
+	IEnumerator FadeOut(SpriteRenderer sprite)
+	{
+		sprite.color = new Color(1f, 1f, 1f, 1);
+		while (true) {
+			float step = speed * Time.deltaTime;
+			sprite.color = new Color(1f, 1f, 1f, Mathf.Lerp(sprite.color.a, minimum, step));
+
+			if (sprite.color.a <= 0.01) {
+				yield break;
+			}
+
+			yield return new WaitForEndOfFrame ();
 		}
 	}
 }
