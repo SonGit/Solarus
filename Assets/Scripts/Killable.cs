@@ -19,6 +19,9 @@ public abstract class Killable: MonoBehaviour {
 	public float _hitPoints = 100;
 	public float _resistance = 0; //resistance value in %
 	public event Action OnHitEvent = delegate {};
+
+	public List<GameObject> navWaypoints;
+
 	public void OnHit(float damage, Killable attacker)
 	{
 		// If friendly fire, ignore
@@ -56,6 +59,16 @@ public abstract class Killable: MonoBehaviour {
 		OnHitAdditional ();
 	}
 
+	public void OnHit(float damage)
+	{
+		
+		_hitPoints -= (damage - (damage * _resistance)/100);
+
+		if (_hitPoints <= 0) {
+			Killed ();
+		}
+	}
+
 	public abstract void OnKilled ();
 
 	public void RemoveFromMinimap()
@@ -76,6 +89,31 @@ public abstract class Killable: MonoBehaviour {
 	{
 		OnKilled ();
 		RemoveFromMinimap ();
+	}
+
+	public void CreateField()
+	{
+		navWaypoints = new List<GameObject>();
+
+		// ...later, in your createField() method
+		GameObject newTarget;
+		float fieldWidth = 505;
+
+		for( int i = 0; i < 7; i++ )
+		{
+			newTarget = new GameObject();
+
+			newTarget.name = "Waypoint_" + i;
+			// parent it so that it follows the player
+			newTarget.transform.parent = transform;
+			newTarget.transform.localPosition = Vector3.zero;
+			newTarget.transform.localPosition = UnityEngine.Random.insideUnitSphere * fieldWidth;
+
+			// push into our targets array
+			navWaypoints.Add(newTarget);
+
+		}
+
 	}
 
 }

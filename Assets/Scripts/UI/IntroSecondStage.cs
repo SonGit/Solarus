@@ -56,9 +56,11 @@ public class IntroSecondStage : MonoBehaviour {
 		yield return new WaitForSeconds (2);
 		_speed = 0;
 		isThrusting = false;
-		_pc.position = new Vector3 (321,412,-12342);
+		_pc.position = new Vector3 (1375,79,-11172);
 		_pc.eulerAngles = new Vector3 (0,42,0);
+
 		PlayerController.instance.enabled = true;
+		PlayerController.instance._trackOOB = true;
 
 		_acc.enabled = true;
 		TurnFogParticle(true);

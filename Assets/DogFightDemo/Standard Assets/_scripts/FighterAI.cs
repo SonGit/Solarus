@@ -16,7 +16,7 @@ public class FighterAI : Killable
 	public Light targetLight;
 
 	public List<GameObject> targetNavWaypoint;
-	public List<GameObject> navWaypoints;
+
 	public GameObject currentWaypoint;
 	public float distanceToTarget;
 	
@@ -38,7 +38,6 @@ public class FighterAI : Killable
 	public virtual void Initialize (BattleCenter battleCenter,Bigship _owner) 
 	{
 		targetNavWaypoint = new List<GameObject> ();
-		navWaypoints = new List<GameObject> ();
 		possibleTargets= new List<Killable> ();
 		target = null;
 		targetTransform = null;
@@ -249,12 +248,11 @@ public class FighterAI : Killable
 		
 		// Randomize the targets
 		target = possibleTargets[Random.Range(0,possibleTargets.Count-1)];
-		FighterAI aiScript = target.GetComponent<FighterAI> ();
 
-		if (aiScript != null) {
+		if (target != null) {
 			
 			targetTransform = target.transform;
-			targetNavWaypoint = aiScript.navWaypoints;
+			targetNavWaypoint = target.navWaypoints;
 
 			// set first target
 			GetNextTarget();
@@ -262,28 +260,5 @@ public class FighterAI : Killable
 		}
 	}
 
-	public void CreateField()
-	{
-		navWaypoints = new List<GameObject>();
 
-		// ...later, in your createField() method
-		GameObject newTarget;
-		float fieldWidth = 505;
-
-		for( int i = 0; i < 7; i++ )
-		{
-			newTarget = new GameObject();
-
-			newTarget.name = "Waypoint_" + i;
-			// parent it so that it follows the player
-			newTarget.transform.parent = transform;
-			newTarget.transform.localPosition = Vector3.zero;
-			newTarget.transform.localPosition = Random.insideUnitSphere * fieldWidth;
-
-			// push into our targets array
-			navWaypoints.Add(newTarget);
-
-		}
-
-	}
 }

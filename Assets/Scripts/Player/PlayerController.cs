@@ -6,6 +6,7 @@ using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using System;
+using System.Collections.Generic;
 
 
 public class PlayerController : Killable
@@ -71,6 +72,11 @@ public class PlayerController : Killable
 	public event Action OnHPChanged = delegate {};
 	public event Action OnSpeedChanged = delegate {};
 
+	public BattleCenter _battleCenter;
+	public float _distanceFromBattleCenter = 0;
+
+	public OOB _OOBUI;
+
 	[SerializeField]
 	private PlayerWin _playerWin;
 
@@ -96,6 +102,10 @@ public class PlayerController : Killable
 		mainCamT = Camera.main.transform;
 
 		UnityEngine.XR.InputTracking.Recenter();
+
+		_trackOOB = false;
+
+		CreateField ();
 	}
 	public bool stop;
 	void Update () {
@@ -143,18 +153,48 @@ public class PlayerController : Killable
 		if (_isFiring)
 			Fire ();
 
-		if (_speed < 2)
-			_speed = 2;
+		if (_speed < 50)
+			_speed = 50;
 
 		if (_speed > 200)
 			_speed = 200;
 
 		if(!stop)
 		t.position += t.forward * Time.deltaTime * _speed ;
-
-
-	}
 		
+		if(_trackOOB)
+		TrackOOB ();
+	}
+
+	public float OOBTime = 10;
+	float currentOOBTime = 0;
+	public bool _trackOOB;
+
+	void TrackOOB()
+	{
+		_distanceFromBattleCenter = Vector3.Distance (t.position,_battleCenter.transform.position);
+
+		if (_distanceFromBattleCenter > 6500) {
+
+			currentOOBTime -= Time.deltaTime;
+
+			_OOBUI.ShowTime ((int)currentOOBTime);
+
+			if (currentOOBTime <= 0) {
+
+				currentOOBTime = OOBTime;
+				_OOBUI.StopShowTime ();
+				t.position = _battleCenter.transform.position;
+
+			}
+
+		} else {
+			currentOOBTime = OOBTime;
+			_OOBUI.StopShowTime ();
+		}
+	}
+
+
 	void FixedUpdate () {
 		Quaternion AddRot = Quaternion.identity;
 		float roll = 0;
@@ -226,11 +266,7 @@ public class PlayerController : Killable
 
 	private void OnTriggerEnter(Collider collision)
 	{
-		BigshipHealth bsh = collision.GetComponent<BigshipHealth> ();
 
-		if (bsh != null) {
-			//Killed ();
-		}
 	}
 
 	public override void OnKilled ()
@@ -242,11 +278,13 @@ public class PlayerController : Killable
 		explosion.transform.position = transform.position;
 		explosion.transform.localScale = new Vector3 (10,10,10);
 		explosion.Live ();
+
+		_playerWin.Play ();
 	}
 
 	public void Win()
 	{
 		_playerWin.Play ();
 	}
-
+		
 }

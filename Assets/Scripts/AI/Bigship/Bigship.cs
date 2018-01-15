@@ -22,6 +22,7 @@ public class Bigship : Killable {
 
 	protected BattleCenter _bc;
 
+	public PlayerWin _playerWin;
 
 	// Use this for initialization
 	IEnumerator Start () {
@@ -127,7 +128,9 @@ public class Bigship : Killable {
 		AI.gameObject.SetActive (true);
 		AI.Initialize (_bc,this);
 
-		_hitPoints -= 10;
+	//	_hitPoints -= 100;
+
+		OnHit (1000);
 	}
 
 	public override void OnKilled ()
@@ -135,10 +138,12 @@ public class Bigship : Killable {
 
 		if (_faction == Faction.ENEMY) {
 			print ("WIN");
+			_playerWin.Play ();
 		}
 
 		if (_faction == Faction.ALLY) {
 			print ("LOSE");
+			_playerWin.Play ();
 		}
 	}
 

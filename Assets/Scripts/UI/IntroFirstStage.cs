@@ -57,11 +57,14 @@ public class IntroFirstStage : MonoBehaviour {
 			sprite.color = new Color(1f, 1f, 1f, Mathf.Lerp(sprite.color.a, maximum, step));
 
 			if (sprite.color.a > 0.99f) {
+				sprite.color = new Color(1f, 1f, 1f, 1);
 				yield break;
 			}
 	
 			yield return new WaitForEndOfFrame ();
 		}
+
+
 	}
 
 	IEnumerator FadeOut(SpriteRenderer sprite)
@@ -71,10 +74,12 @@ public class IntroFirstStage : MonoBehaviour {
 			sprite.color = new Color(1f, 1f, 1f, Mathf.Lerp(sprite.color.a, minimum, step));
 
 			if (sprite.color.a <= 0.01) {
+				sprite.color = new Color(1f, 1f, 1f, 0);
 				yield break;
 			}
 
 			yield return new WaitForEndOfFrame ();
 		}
+
 	}
 }

@@ -43,7 +43,7 @@ public class PlayerUI : MonoBehaviour {
 
 	void OnHPChanged()
 	{
-		hpText.text = pc._hitPoints/10 + "%";
+		hpText.text = (int)(pc._hitPoints/10) + "%";
 	}
 
 	void OnSpeedChanged()

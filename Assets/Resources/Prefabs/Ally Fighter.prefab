@@ -1063,10 +1063,10 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 569c591098fa14a1184c5ee83e82fbba, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1455,6 +1455,7 @@ MonoBehaviour:
   _faction: 2
   _hitPoints: 100
   _resistance: 0
+  navWaypoints: []
   actualSensitivity: 0.35
   speed: 90
   targetPlayerAngle: 30
@@ -1465,7 +1466,6 @@ MonoBehaviour:
   rightGun: {fileID: 114235059347888696}
   targetLight: {fileID: 108320735421771568}
   targetNavWaypoint: []
-  navWaypoints: []
   currentWaypoint: {fileID: 0}
   distanceToTarget: 0
   target: {fileID: 0}

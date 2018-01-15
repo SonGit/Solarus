@@ -30,12 +30,12 @@ public class PlayerWin : MonoBehaviour {
 
 	IEnumerator Play_async()
 	{
-		_deathCry.Play ();
+		//_deathCry.Play ();
 		yield return new WaitForSeconds (2);
-		_remember.Play ();
 		yield return new WaitForSeconds (1);
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 2; i++) {
+			blackBG.color = new Color(1f, 1f, 1f, 1);
 			_flash.Stop ();
 			_flash.Play ();
 			yield return FadeIn (blackBG);
@@ -61,6 +61,7 @@ public class PlayerWin : MonoBehaviour {
 
 			yield return new WaitForEndOfFrame ();
 		}
+		sprite.color = new Color(1f, 1f, 1f, 1);
 	}
 
 	IEnumerator FadeOut(SpriteRenderer sprite)
@@ -76,5 +77,7 @@ public class PlayerWin : MonoBehaviour {
 
 			yield return new WaitForEndOfFrame ();
 		}
+
+		sprite.color = new Color(1f, 1f, 1f, 0);
 	}
 }
